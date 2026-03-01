@@ -392,6 +392,30 @@
             app:custom_font="@string/font_dosis_regular" />
 
         <RelativeLayout
+            android:id="@+id/relative_anySpace"
+            style="@style/LayoutOption">
+
+            <it.keybeeproject.keybee.view.TextViewCustom
+                android:id="@+id/text_anySpace"
+                style="@style/TextOption"
+                android:layout_toLeftOf="@+id/check_anySpace"
+                android:layout_toStartOf="@+id/check_anySpace"
+                android:text="@string/any_space"
+                app:custom_font="@string/font_dosis_regular" />
+
+            <CheckBox
+                android:id="@+id/check_anySpace"
+                style="@style/CheckOption" />
+
+            <it.keybeeproject.keybee.view.TextViewCustom
+                style="@style/TextOptionIntro"
+                android:layout_below="@id/text_anySpace"
+                android:layout_toLeftOf="@id/check_anySpace"
+                android:text="@string/any_space_intro"
+                app:custom_font="@string/font_dosis_regular" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/relative_dotSpace"
             style="@style/LayoutOption">
 
