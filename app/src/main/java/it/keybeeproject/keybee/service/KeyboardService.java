@@ -579,12 +579,21 @@ public class KeyboardService extends InputMethodService implements
                 case KeyEvent.KEYCODE_DEL:
                     updateOnBackSpace();
 
-                    /**
-                     * Check for dot + space
-                     */
                     String currentText = getCurrentInputConnection().getTextBeforeCursor(2, 0).toString();
                     if (currentText != null && currentText.length() > 1) {
-                        if (isDotSpaceEnabled && currentText.equals(". ") && !isShiftOn) {
+                        /**
+                         * Check for punctuation + space
+                         */
+                        if (isAnySpaceEnabled &&
+                                currentText.charAt(1) == ' ' &&
+                                ArrayUtils.contains(PUNCTUATION_CHARS_REQUIRING_CAPITALIZATION, currentText.charAt(0))) {
+                            isShiftOn = true;
+                            updateOnShift();
+                        }
+                        /**
+                         * Check for dot + space
+                         */
+                        else if (isDotSpaceEnabled && currentText.equals(". ") && !isShiftOn) {
                             isShiftOn = true;
                             updateOnShift();
                         } else if (isShiftOn && !isCapsLockOn) {
