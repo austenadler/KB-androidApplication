@@ -668,9 +668,10 @@ public class KeyboardService extends InputMethodService implements
                         } else {
                             currentAlignment++;
                         }
+
+                        PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
+                        setKeyboardAlignment();
                     }
-                    PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
-                    setKeyboardAlignment();
                     break;
                 case KEYCODE_SPACE:
                     if (isCursorEnabled) {
@@ -1291,6 +1292,7 @@ public class KeyboardService extends InputMethodService implements
         setKeyboardHeight();
         super.onStartInputView(editorInfo, restarting);
 
+        button39.setVisibility(isFullWidth ? View.INVISIBLE : View.VISIBLE);
         isAutocapitalizationEnable = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_TEXT_AUTOCAPITALIZATION_ENABLED_B, false);
 
         setEmojiViewVisible(false);
