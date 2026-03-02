@@ -173,6 +173,8 @@
     <string name="get_free_access_to_all_themes">Free access to all themes and custom layout</string>
     <string name="notification">Notifications</string>
     <string name="keep_me_updated_about_keybee">Tap to sync new devices with our push notifications</string>
+    <string name="emoji">Emojis</string>
+    <string name="emoji_info">Enable emoji button</string>
     <string name="message_free_subscription">With Keybee Keyboard subscription: \n\nYou will get free access to all the current and future Keybee Keyboard themes. You can use or switch theme whenever you like without paying theme individually. \n\nYou can customise the selected layout by moving all the letters around the main keyboard. \n\nYou will help to improve the quality of the key bee project with new features, new layouts, new themes and more frequent updates.so if you also want support us, this subscription os the best way to make Keybee Keyboard better. \n\nImportant note: you can view the status of your subscription and cancel it if necessary from the My Apps Screen in the Play Store app. \n\n\nThank You!\n </string>
     <string name="subscribe">SUBSCRIBE</string>
     <string name="reset">RESET</string>

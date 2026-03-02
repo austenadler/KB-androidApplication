@@ -38,13 +38,13 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout linearEnable, linearTutorial, linearProjectInfo, linearSize, linearAlignment, linearTheme,
             linearLayout, linearKeybee, linearGithub, linearKeybeecontest, linearFacebook, linearTwitter, linearLinkedIn, linearDonate, linearCurrency;
     private RelativeLayout relative_topgap,relativeFullWidth, relativeLateralGap, relativeSound, relativeVibra, relativeDotSpace, linear_free_theme,
-            relativePreview, relativeTwipe, relativeCursor, relativeDotApostophe, relativeTextCorrection, relativeTextAutoCapitalization, relative_notification;
+            relativePreview, relativeTwipe, relativeCursor, relativeDotApostophe, relativeTextCorrection, relativeTextAutoCapitalization, relative_notification, relative_emoji;
     private ImageView img_apply_theme;
     private String[] arrSizeTitle, arrAlignmentTitle, arrLayoutTitle, arrCurrencyTitle, arrLanguageCode;
     private float[] arrSizeValue;
     private int currentKeyboardLayout;
     private CheckBox check_topgap,checkFullWidth, checkLateralGapFill, checkSound, checkVibra, checkDotSpace, checkPreview, checkTwipe,
-            checkCursor, checkDotApostophe, checkTextSuggestion, checkTextAutoCapitalization, check_notification;
+            checkCursor, checkDotApostophe, checkTextSuggestion, checkTextAutoCapitalization, check_notification, check_emoji;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
         relativeTextCorrection = findViewById(R.id.relative_textCorrection);
         relativeTextAutoCapitalization = findViewById(R.id.relative_textAutoCapitalization);
         relative_notification = findViewById(R.id.relative_notification);
+        relative_emoji = findViewById(R.id.relative_emoji);
 
         check_notification = findViewById(R.id.check_notification);
         checkFullWidth = findViewById(R.id.check_fullWidth);
@@ -123,6 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
         checkDotApostophe = findViewById(R.id.check_dot_apostophe);
         checkTextSuggestion = findViewById(R.id.check_textCorrection);
         checkTextAutoCapitalization = findViewById(R.id.check_textAutoCapitalization);
+        check_emoji = findViewById(R.id.check_emoji);
 
         img_apply_theme = findViewById(R.id.img_apply_theme);
 
@@ -305,6 +307,14 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        relative_emoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                check_emoji.setChecked(!check_emoji.isChecked());
+                PrefData.setBooleanPrefs(SettingsActivity.this, PrefData.KEY_IS_EMOJI_ENABLED_B, check_emoji.isChecked());
+            }
+        });
+
         linearKeybee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -433,6 +443,7 @@ public class SettingsActivity extends AppCompatActivity {
         img_apply_theme.setImageResource(PrefData.getBooleanPrefs(this, Constant.SKU) ? R.drawable.ic_check : R.drawable.ic_add);
         //int status = PrefData.getIntPrefs(this, PrefData.KEY_NOTIFICATION, OneSignal.getNotifications().getPermission() ? 1 : -1);
         check_notification.setChecked(OneSignal.getNotifications().getPermission());
+        check_emoji.setChecked(PrefData.getBooleanPrefs(SettingsActivity.this, PrefData.KEY_IS_EMOJI_ENABLED_B, true));
         try {
             if (!OneSignal.getNotifications().getPermission())
                 OneSignal.getUser().getPushSubscription().optOut();

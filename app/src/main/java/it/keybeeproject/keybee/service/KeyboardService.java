@@ -106,7 +106,7 @@ public class KeyboardService extends InputMethodService implements
             currentAlignment, lastMoveId = -1, lastDownId, bgEmoji, hMove, candidateHeight = 0;
     private boolean isTopGap,isFullWidth, isShiftOn, isCapsLockOn, isSoundEnabled, isVibraEnabled, isDotSpaceEnabled,
             isPreviewOn, isMoved, isSizeChanged, isTwipeEnabled, isFirstButtonReset, isCursorEnabled, isCursorModeOn,
-            isTextSuggestionEnabled, isCandidateClicked, isAutocapitalizationEnable;
+            isTextSuggestionEnabled, isCandidateClicked, isAutocapitalizationEnable, isEmojiEnabled;
     private boolean isActionDownCalled = false; // If user clicks outside of keyboard then text should not appear.For that ACTION_DOWN will be called but flag will not be true so that ACTION_UP will be called but due to condition code will not be execute.
     private final char space = 32;
     private float lastX, lastY, keyboardSize;
@@ -600,7 +600,10 @@ public class KeyboardService extends InputMethodService implements
                     printText(space);
                     break;
                 case KEYCODE_EMOTICON:
-                    setEmojiViewVisible(true);
+                    if (isEmojiEnabled) {
+                        // Only enable emoji if it's enabled in settings
+                        setEmojiViewVisible(true);
+                    }
                     break;
                 case KEYCODE_SETTINGS:
                 case KEYCODE_ALIGNMENT:
@@ -1292,6 +1295,8 @@ public class KeyboardService extends InputMethodService implements
         super.onStartInputView(editorInfo, restarting);
 
         isAutocapitalizationEnable = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_TEXT_AUTOCAPITALIZATION_ENABLED_B, false);
+        isEmojiEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_EMOJI_ENABLED_B, true);
+        button37.setVisibility(isEmojiEnabled ? View.VISIBLE : View.INVISIBLE);
 
         setEmojiViewVisible(false);
 
