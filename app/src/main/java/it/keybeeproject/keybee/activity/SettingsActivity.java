@@ -620,8 +620,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void enableDotSpaceSettings(boolean enable) {
         int textColor = enable ? getResources().getColor(R.color.black) : getResources().getColor(R.color.text_gray);
+        float checkAlpha = enable ? 1.0f : 0.4f;
         relativeDotSpace.setEnabled(enable);
         textDotSpace.setTextColor(textColor);
+        checkDotSpace.setAlpha(checkAlpha);
     }
 
     @Override
