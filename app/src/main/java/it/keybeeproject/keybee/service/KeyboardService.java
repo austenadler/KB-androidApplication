@@ -208,7 +208,7 @@ public class KeyboardService extends InputMethodService implements
         isSoundEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_SOUND_ENABLED_B);
         isVibraEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_VIBRA_ENABLED_B);
         isDotSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_DOT_SPACE_ENABLED_B, true);
-        isMainAfterSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_MAIN_AFTER_SPACE_ENABLED_B, true);
+        isMainAfterSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_MAIN_AFTER_SPACE_ENABLED_B, false);
         isPreviewOn = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_PREVIEW_ENABLED_B, true);
         isTwipeEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_TWIPE_ENABLED_B, true);
         isCursorEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_CURSOR_ENABLED_B, true);
