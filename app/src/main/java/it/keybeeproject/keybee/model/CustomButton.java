@@ -135,4 +135,14 @@ public enum CustomButton {
         this.buttonLabel = buttonLabel;
         this.isCharacter = isCharacter;
     }
+
+    public static final String[] LABELS;
+
+    static {
+        CustomButton[] values = values();
+        LABELS = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            LABELS[i] = values[i].buttonLabel;
+        }
+    }
 }

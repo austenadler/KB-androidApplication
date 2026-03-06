@@ -74,23 +74,13 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
         Text_A0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ITALIAN) {
-                    if (PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.k) != null && PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.k).size() != 0) {
-                        list = PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.k);
-                    } else {
-                        list = new ArrayList<String>(Arrays.asList(k));
-                    }
-                    openPopupDialog(list, PrefData.k);
+//                if (currentKeyboardLayout == PrefData.VAL_LAYOUT_SPANISH) {
+                if (PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.g) != null && PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.g).size() != 0) {
+                    list = PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.g);
+                } else {
+                    list = new ArrayList<String>(Arrays.asList(g));
                 }
-                if (currentKeyboardLayout == PrefData.VAL_LAYOUT_SPANISH) {
-                    if (PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.g) != null && PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.g).size() != 0) {
-                        list = PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.g);
-                    } else {
-                        list = new ArrayList<String>(Arrays.asList(g));
-                    }
-                    openPopupDialog(list, PrefData.g);
-                }
-
+                openPopupDialog(list, PrefData.g);
             }
         });
 
@@ -115,16 +105,9 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
             public void onClick(View v) {
                 //if (PrefData.getBooleanPrefs(CustomLayoutActivity.this, Constant.SKU)) { //need to remove not
                 String A0 = Spin_A0.getSelectedItem().toString();
-                if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ENGLISH) {
-                    PrefData.setStringPrefs(CustomButtonsActivity.this, PrefData.AO_EN, A0.toLowerCase());
-                } else if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ITALIAN) {
-                    PrefData.setStringPrefs(CustomButtonsActivity.this, PrefData.AO_IT, A0.toLowerCase());
-                } else if (currentKeyboardLayout == PrefData.VAL_LAYOUT_SPANISH) {
-                    PrefData.setStringPrefs(CustomButtonsActivity.this, PrefData.AO_SP, A0.toLowerCase());
-                } else if (currentKeyboardLayout == PrefData.VAL_LAYOUT_GERMAN) {
-                    PrefData.setStringPrefs(CustomButtonsActivity.this, PrefData.AO_DE, A0.toLowerCase());
-                }
-
+                // PrefData.setStringPrefs(CustomButtonsActivity.this, PrefData.AO_EN, A0.toLowerCase());
+                // CustomButton.valueOf("Enter")
+                // enumValue.name();
                 finishmethod();
 
                 //} else { showFreeSubscriptionAlert();}
@@ -159,7 +142,6 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 switch (charcter) {
                     case PrefData.a:
                         ArrayList<String> a1 = new ArrayList<String>(Arrays.asList(a));
@@ -203,7 +185,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
 
 //        if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ITALIAN) {
-        main_txt.setText(R.string.italian);
+//        main_txt.setText(R.string.italian);
         array1 = new String[]{"<u>K</u>", "V", "B", "X", "Q", "<u>D</u>", "<u>R</u>", "P", "<u>U</u>", "<u>E</u>", "<u>A</u>", "<u>S</u>", "<u>H</u>", "<u>I</u>", "<u>T</u>", "<u>C</u>", "<u>L</u>", "<u>O</u>", "<u>N</u>", "W", "F", "<u>G</u>", "M", "J", "<u>Y</u>", "<u>Z</u>"};
         array = new String[]{"K", "V", "B", "X", "Q", "D", "R", "P", "U", "E", "A", "S", "H", "I", "T", "C", "L", "O", "N", "W", "F", "G", "M", "J", "Y", "Z"};
 
@@ -216,7 +198,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
         Spin_A0 = findViewById(R.id.Spin_A0);
 
-        A0 = ArrayAdapter.createFromResource(this, R.array.alphabet, R.layout.text_spinner);
+        A0 = new ArrayAdapter<>(this, R.layout.text_spinner, CustomButton.LABELS);
         Spin_A0.setAdapter(A0);
 
         setData();
