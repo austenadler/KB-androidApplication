@@ -23,6 +23,7 @@
     <string name="discover_new_way">Discover the new way of typing</string>
     <string name="main_settings">Main settings</string>
     <string name="layout">Layout and pop-up</string>
+    <string name="customize">Customize buttons</string>
     <string name="layout_dialog">Layout</string>
     <string name="theme">Theme</string>
     <string name="twipe">Twipe</string>
@@ -75,6 +76,7 @@
     <string name="center">Center</string>
     <string name="left">Left</string>
     <string name="dark">Dark</string>
+    <string name="customizeDescription">Customize small keybaord buttons</string>
     <string name="light">Light</string>
     <string name="msg_instruct_language">Thank you for downloading\nKeybee Keyboard.\n\nPlease select your layout:</string>
     <string name="popup">Pop-up</string>
