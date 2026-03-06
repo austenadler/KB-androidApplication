@@ -33,6 +33,8 @@ import it.keybeeproject.keybee.utility.TypefaceSpan;
 
 public class CustomButtonsActivity extends AppCompatActivity {//implements IabBroadcastReceiver.IabBroadcastListener {
 
+    // The number of button settings. (4 buttons on top + 4 on bottom) * 2 for short+long press makes 16
+    static final int NUM_CUSTOM_BUTTON_SETTINGS = 16;
     // List of default custom button settings. Short and long actions
     String[] defaultButtonActions = {
             ButtonAction.Disabled.name(), ButtonAction.Disabled.name(),
@@ -52,27 +54,14 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
     int[] spinnerIds = {R.id.Spin_Top1Short, R.id.Spin_Top1Long, R.id.Spin_Top2Short, R.id.Spin_Top2Long, R.id.Spin_Top3Short, R.id.Spin_Top3Long, R.id.Spin_Top4Short, R.id.Spin_Top4Long, R.id.Spin_Bottom1Short, R.id.Spin_Bottom1Long, R.id.Spin_Bottom2Short, R.id.Spin_Bottom2Long, R.id.Spin_Bottom3Short, R.id.Spin_Bottom3Long, R.id.Spin_Bottom4Short, R.id.Spin_Bottom4Long};
     int[] textIds = {R.id.Text_Top1Short, R.id.Text_Top1Long, R.id.Text_Top2Short, R.id.Text_Top2Long, R.id.Text_Top3Short, R.id.Text_Top3Long, R.id.Text_Top4Short, R.id.Text_Top4Long, R.id.Text_Bottom1Short, R.id.Text_Bottom1Long, R.id.Text_Bottom2Short, R.id.Text_Bottom2Long, R.id.Text_Bottom3Short, R.id.Text_Bottom3Long, R.id.Text_Bottom4Short, R.id.Text_Bottom4Long};
+    Spinner[] spinners = new Spinner[16];
+    TextView[] textViews = new TextView[16];
     ArrayAdapter A0;
     CustomButtonSetting[] customButtonSettingList = new CustomButtonSetting[16];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        List<String> currentSettings = PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.CUSTOM_BUTTONS);
-        if (currentSettings == null || currentSettings.size() != customButtonSettingList.length) {
-            currentSettings = Arrays.asList(defaultButtonActions);
-        }
-        for (int i = 0; i < customButtonSettingList.length; i++) {
-            customButtonSettingList[i] = new CustomButtonSetting(
-                    i,
-                    this,
-                    findViewById(spinnerIds[i]),
-                    findViewById(textIds[i]),
-                    i%2==0,
-                    ButtonAction.valueOf(currentSettings.get(i))
-            );
-        }
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setContentView(R.layout.activity_custom_buttons);
@@ -84,6 +73,16 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
     private void setData() {
         Spin_A0.setSelection(A0.getPosition(PrefData.getStringPrefs(CustomButtonsActivity.this, PrefData.AO_EN, array[0]).toUpperCase()));
+
+        List<String> currentSettings = PrefData.getArrayListPref(CustomButtonsActivity.this, PrefData.CUSTOM_BUTTONS);
+        if (currentSettings == null || currentSettings.size() != customButtonSettingList.length) {
+            currentSettings = Arrays.asList(defaultButtonActions);
+        }
+        for (int i = 0; i < NUM_CUSTOM_BUTTON_SETTINGS; i++) {
+            customButtonSettingList[i].spinner.setSelection(customButtonSettingList[i].adapter.getPosition(
+                    currentSettings.get(i)
+            ));
+        }
     }
 
     private void Onclick() {
@@ -125,6 +124,13 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
                 // PrefData.setStringPrefs(CustomButtonsActivity.this, PrefData.AO_EN, A0.toLowerCase());
                 // CustomButton.valueOf("Enter")
                 // enumValue.name();
+
+                ArrayList<String> newSettings = new ArrayList<>();
+                for (int i = 0; i < NUM_CUSTOM_BUTTON_SETTINGS; i++) {
+                    newSettings.add(customButtonSettingList[i].spinner.getSelectedItem().toString());
+                }
+                PrefData.setArrayListPref(CustomButtonsActivity.this, PrefData.CUSTOM_BUTTONS, newSettings);
+
                 finishmethod();
 
                 //} else { showFreeSubscriptionAlert();}
@@ -217,6 +223,21 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
         A0 = new ArrayAdapter<>(this, R.layout.text_spinner, ButtonAction.LABELS);
         Spin_A0.setAdapter(A0);
+
+
+
+        for (int i = 0; i < customButtonSettingList.length; i++) {
+            customButtonSettingList[i] = new CustomButtonSetting(
+                    i,
+                    i > 8,
+                    i/2,
+                    i%2==0,
+                    this,
+                    findViewById(spinnerIds[i]),
+                    findViewById(textIds[i])
+//                    ButtonAction.valueOf(currentSettings.get(i))
+            );
+        }
 
         setData();
     }

@@ -1,11 +1,11 @@
 package it.keybeeproject.keybee.model;
 
 public enum ButtonAction {
-    Disabled("?", false),
-    Settings("?", false),
-    Emoji("?", false),
-    Enter("?", false),
-    Layout("?", false),
+    Disabled("Disabled", false),
+    Settings("Settings", false),
+    Emoji("Emoji", false),
+    Enter("Enter", false),
+    Layout("Layout", false),
     A("A", true),
     B("B", true),
     C("C", true),

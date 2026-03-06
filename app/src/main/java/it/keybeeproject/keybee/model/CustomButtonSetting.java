@@ -17,11 +17,13 @@ public class CustomButtonSetting {
     public ButtonAction buttonAction;
 
     public CustomButtonSetting(int idx,
+                               boolean isOnTop,
+                               int buttonNumber,
+                               boolean longPress,
                                Context context,
                                Spinner spinner,
-                               TextView textView,
-                               boolean longPress,
-                               ButtonAction buttonAction
+                               TextView textView
+//                               ButtonAction buttonAction
                                ) {
         this.idx = idx;
         this.spinner = spinner;
@@ -29,6 +31,6 @@ public class CustomButtonSetting {
         this.spinner.setAdapter(this.adapter);
         this.textView = textView;
         this.longPress = longPress;
-        this.buttonAction = buttonAction;
+//        this.buttonAction = buttonAction;
     }
 }
