@@ -17,14 +17,14 @@
             android:orientation="vertical"
             android:padding="@dimen/dp20">
 
-                <it.keybeeproject.keybee.view.TextViewCustom
-                    android:id="@+id/main_txt"
-                    style="@style/TextInstructHome"
-                    android:layout_marginLeft="@dimen/dp60"
-                    android:layout_marginBottom="@dimen/dp10"
-                    android:gravity="start"
-                    android:text="@string/smallButtons"
-                    app:custom_font="@string/font_dosis_medium" />
+            <it.keybeeproject.keybee.view.TextViewCustom
+                android:id="@+id/main_txt"
+                style="@style/TextInstructHome"
+                android:layout_marginLeft="@dimen/dp60"
+                android:layout_marginBottom="@dimen/dp10"
+                android:gravity="start"
+                android:text="@string/smallButtons"
+                app:custom_font="@string/font_dosis_medium" />
 
 
             <LinearLayout
@@ -70,8 +70,7 @@
 
                     <Spinner
                         android:id="@+id/Spin_A0"
-                        style="@style/spinner"
-                        />
+                        style="@style/spinner" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -79,19 +78,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <it.keybeeproject.keybee.view.ButtonCustom
                     android:id="@+id/reset"
                     style="?android:borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/reset"
-                    android:gravity="center"
                     android:layout_marginRight="@dimen/dp40"
-                    android:textAllCaps="true"
-                    android:textSize="@dimen/sp14"
-                    android:textColor="@color/colorAccent"
                     android:layout_weight="1"
-                    />
+                    android:gravity="center"
+                    android:text="@string/reset"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/sp14" />
 
 
                 <it.keybeeproject.keybee.view.ButtonCustom
@@ -99,14 +98,13 @@
                     style="?android:borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/done"
                     android:layout_marginLeft="@dimen/dp40"
-                    android:textSize="@dimen/sp14"
+                    android:layout_weight="1"
                     android:gravity="center"
+                    android:text="@string/done"
                     android:textAllCaps="true"
                     android:textColor="@color/colorAccent"
-                    android:layout_weight="1"
-                    />
+                    android:textSize="@dimen/sp14" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
