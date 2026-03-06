@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,14 +22,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import it.keybeeproject.keybee.R;
 import it.keybeeproject.keybee.adapter.PopUpAdapter;
+import it.keybeeproject.keybee.model.CustomButton;
+import it.keybeeproject.keybee.model.CustomButtonSetting;
 import it.keybeeproject.keybee.utility.PrefData;
 import it.keybeeproject.keybee.utility.TypefaceSpan;
 
 public class CustomButtonsActivity extends AppCompatActivity {//implements IabBroadcastReceiver.IabBroadcastListener {
 
+    // List of default custom button settings. Short and long actions
+    List<Pair<CustomButton, CustomButton>> defaultButtonList = Arrays.asList(
+            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
+            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
+            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
+            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
+            Pair.create(CustomButton.Disabled, CustomButton.Settings),
+            Pair.create(CustomButton.Emoji, CustomButton.Disabled),
+            Pair.create(CustomButton.Enter, CustomButton.Disabled),
+            Pair.create(CustomButton.Layout, CustomButton.Disabled)
+            );
     String[] array, array1, a, c, d, e, g, h, i, j, k, l, o, n, r, s, t, u, w, y, z;
     int currentKeyboardLayout;
     Spinner Spin_A0;
@@ -184,25 +199,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
         //a,c,d,e,g,h,i,j,k,l,o,r,s,t,u,w,y,z
 
-        a = new String[]{"æ", "à", "ã", "å", "á", "â", "ä", "ª", "ā", "ă", "ą"};
-        c = new String[]{"ć", "č", "ç", "ċ", "ĉ"};
-        d = new String[]{"ð", "đ", "ď"};
-        e = new String[]{"ē", "è", "ê", "ë", "é", "ę", "ė", "ě"};
-        g = new String[]{"ġ", "ğ", "ĝ", "ģ"};
-        h = new String[]{"ħ", "ĥ"};
-        i = new String[]{"ï", "ì", "ī", "î", "í", "į", "ĩ"};
-        //j = new String[]{"ĵ"};
-        k = new String[]{"ĸ", "ķ"};
-        l = new String[]{"ļ", "ĺ", "ľ", "ŀ", "ł"};
-        n = new String[]{"ń", "ñ", "ņ", "ŋ", "ň", "ŉ"};
-        o = new String[]{"õ", "ò", "ó", "ø", "ō", "ö", "ô", "œ", "º", "ő"};
-        r = new String[]{"ŕ", "ř", "ŗ"};
-        s = new String[]{"ŝ", "ß", "š", "ş", "ś", "ș"};
-        t = new String[]{"ŧ", "ť", "ț", "ţ"};
-        u = new String[]{"ü", "ù", "ú", "ů", "û", "ū", "ŭ", "ũ", "ų", "ű", "µ"};
-        // w = new String[]{"ŵ"};
-        y = new String[]{"ý", "ŷ", "ÿ"};
-        z = new String[]{"ź", "ż", "ž"};
+
 
 
 //        if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ITALIAN) {
