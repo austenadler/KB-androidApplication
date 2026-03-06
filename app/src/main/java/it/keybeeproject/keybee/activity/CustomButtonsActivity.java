@@ -27,13 +27,14 @@ import java.util.List;
 import it.keybeeproject.keybee.R;
 import it.keybeeproject.keybee.adapter.PopUpAdapter;
 import it.keybeeproject.keybee.model.ButtonAction;
+import it.keybeeproject.keybee.model.CustomButtonSetting;
 import it.keybeeproject.keybee.utility.PrefData;
 import it.keybeeproject.keybee.utility.TypefaceSpan;
 
 public class CustomButtonsActivity extends AppCompatActivity {//implements IabBroadcastReceiver.IabBroadcastListener {
 
     // List of default custom button settings. Short and long actions
-    List<Pair<ButtonAction, ButtonAction>> defaultButtonList = Arrays.asList(
+    List<Pair<ButtonAction, ButtonAction>> defaultButtonActions = Arrays.asList(
             Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
             Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
             Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
@@ -51,11 +52,23 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
     ArrayList<String> list;
 
 
+    int[] spinnerIds = {R.id.Spin_A0};
+    int[] textIds = {R.id.Text_A0};
     ArrayAdapter A0;
+    List<CustomButtonSetting> customButtonSettingList;
+//    = Arrays.asList(
+//            new CustomButtonSetting(this, findViewById(R.id.Spin_A0), findViewById(R.id.Text_A0), false, defaultButtonActions.get(0))
+//    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        customButtonSettingList = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            customButtonSettingList.add(new CustomButtonSetting(this, findViewById(spinnerIds[i]), findViewById(textIds[i]), false, defaultButtonActions[0]));
+        }
+
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setContentView(R.layout.activity_custom_buttons);
         initGloble();
