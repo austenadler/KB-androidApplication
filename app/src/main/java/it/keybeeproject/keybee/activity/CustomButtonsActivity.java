@@ -47,9 +47,6 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
         initGloble();
         Onclick();
         setData();
-
-        done.setText(R.string.done);
-
     }
 
 
