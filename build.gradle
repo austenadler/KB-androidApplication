@@ -3,7 +3,7 @@
 buildscript {
     ext.support_version = '29.0.0'
     ext.androidsdk = 34
-    ext.minsdk = 21
+    ext.minsdk = 23
     repositories {
         mavenCentral()
         google()
