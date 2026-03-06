@@ -23,7 +23,7 @@
                     android:layout_marginLeft="@dimen/dp60"
                     android:layout_marginBottom="@dimen/dp10"
                     android:gravity="start"
-                    android:text="@string/english"
+                    android:text="@string/smallButtons"
                     app:custom_font="@string/font_dosis_medium" />
 
 
@@ -95,11 +95,11 @@
 
 
                 <it.keybeeproject.keybee.view.ButtonCustom
-                    android:id="@+id/subscribe"
+                    android:id="@+id/done"
                     style="?android:borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/subscribe"
+                    android:text="@string/done"
                     android:layout_marginLeft="@dimen/dp40"
                     android:textSize="@dimen/sp14"
                     android:gravity="center"

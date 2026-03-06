@@ -32,7 +32,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
     String[] array, array1, a, c, d, e, g, h, i, j, k, l, o, n, r, s, t, u, w, y, z;
     int currentKeyboardLayout;
     Spinner Spin_A0;
-    TextView Text_A0, reset, subscribe, main_txt;
+    TextView Text_A0, reset, done, main_txt;
     //private IabHelper iabHelper;
     ArrayList<String> list;
 
@@ -48,7 +48,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
         Onclick();
         setData();
 
-        subscribe.setText(R.string.use);
+        done.setText(R.string.done);
 
     }
 
@@ -98,7 +98,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
             }
 
         });
-        subscribe.setOnClickListener(new View.OnClickListener() {
+        done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //if (PrefData.getBooleanPrefs(CustomLayoutActivity.this, Constant.SKU)) { //need to remove not
@@ -208,26 +208,13 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
         z = new String[]{"ź", "ż", "ž"};
 
 
-        if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ITALIAN) {
-            main_txt.setText(R.string.italian);
-            array1 = new String[]{"<u>K</u>", "V", "B", "X", "Q", "<u>D</u>", "<u>R</u>", "P", "<u>U</u>", "<u>E</u>", "<u>A</u>", "<u>S</u>", "<u>H</u>", "<u>I</u>", "<u>T</u>", "<u>C</u>", "<u>L</u>", "<u>O</u>", "<u>N</u>", "W", "F", "<u>G</u>", "M", "J", "<u>Y</u>", "<u>Z</u>"};
-            array = new String[]{"K", "V", "B", "X", "Q", "D", "R", "P", "U", "E", "A", "S", "H", "I", "T", "C", "L", "O", "N", "W", "F", "G", "M", "J", "Y", "Z"};
-        } else if (currentKeyboardLayout == PrefData.VAL_LAYOUT_SPANISH) {
-            main_txt.setText(R.string.spanish);
-            array1 = new String[]{"<u>G</u>", "B", "F", "X", "Q", "<u>R</u>", "<u>L</u>", "P", "<u>U</u>", "<u>O</u>", "<u>A</u>", "M", "<u>H</u>", "<u>I</u>", "<u>S</u>", "<u>C</u>", "<u>Y</u>", "<u>E</u>", "<u>T</u>", "W", "V", "<u>D</u>", "<u>N</u>", "<u>K</u>", "J", "<u>Z</u>"};
-            array = new String[]{"G", "B", "F", "X", "Q", "R", "L", "P", "U", "O", "A", "M", "H", "I", "S", "C", "Y", "E", "T", "W", "V", "D", "N", "K", "J", "Z"};
-        } else if (currentKeyboardLayout == PrefData.VAL_LAYOUT_GERMAN) {
-            main_txt.setText(R.string.german);
-            array1 = new String[]{"Q", "<u>Y</u>", "P", "X", "<u>Z</u>", "<u>G</u>", "<u>R</u>", "B", "<u>U</u>", "<u>N</u>", "<u>E</u>", "M", "<u>H</u>", "<u>I</u>", "<u>D</u>", "<u>C</u>", "<u>S</u>", "<u>A</u>", "W", "<u>K</u>", "<u>L</u>", "<u>T</u>", "<u>O</u>", "J", "F", "V"};
-            array = new String[]{"Q", "Y", "P", "X", "Z", "G", "R", "B", "U", "N", "E", "M", "H", "I", "D", "C", "S", "A", "W", "K", "L", "T", "O", "J", "F", "V"};
-        } else {
-            main_txt.setText(R.string.english);
-            array1 = new String[]{"J", "<u>Z</u>", "B", "X", "Q", "F", "<u>R</u>", "P", "<u>U</u>", "<u>O</u>", "<u>E</u>", "<u>L</u>", "W", "<u>H</u>", "<u>A</u>", "<u>I</u>", "<u>T</u>", "<u>S</u>", "<u>D</u>", "<u>C</u>", "<u>N</u>", "<u>Y</u>", "M", "<u>K</u>", "<u>G</u>", "V"};
-            array = new String[]{"J", "Z", "B", "X", "Q", "F", "R", "P", "U", "O", "E", "L", "W", "H", "A", "I", "T", "S", "D", "C", "N", "Y", "M", "K", "G", "V"};
-        }
+//        if (currentKeyboardLayout == PrefData.VAL_LAYOUT_ITALIAN) {
+        main_txt.setText(R.string.italian);
+        array1 = new String[]{"<u>K</u>", "V", "B", "X", "Q", "<u>D</u>", "<u>R</u>", "P", "<u>U</u>", "<u>E</u>", "<u>A</u>", "<u>S</u>", "<u>H</u>", "<u>I</u>", "<u>T</u>", "<u>C</u>", "<u>L</u>", "<u>O</u>", "<u>N</u>", "W", "F", "<u>G</u>", "M", "J", "<u>Y</u>", "<u>Z</u>"};
+        array = new String[]{"K", "V", "B", "X", "Q", "D", "R", "P", "U", "E", "A", "S", "H", "I", "T", "C", "L", "O", "N", "W", "F", "G", "M", "J", "Y", "Z"};
 
         reset = findViewById(R.id.reset);
-        subscribe = findViewById(R.id.subscribe);
+        done = findViewById(R.id.done);
 
 
         Text_A0 = findViewById(R.id.Text_A0);
