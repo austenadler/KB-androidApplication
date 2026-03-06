@@ -155,6 +155,7 @@
     <string name="info">Info</string>
     <string name="keybee_theme_market">Keybee Keyboard themes</string>
     <string name="custom_layout">Keybee Keyboard custom layout</string>
+    <string name="custom_buttons">Small Button Customizer</string>
     <string name="theme_info">Tap on the theme to see and use your favourite one.</string>
     <string name="theme_info_OLD">Tap on the theme to see, use or buy your favourite one. A theme costs only 1€ like a coffee in Italy.\n\nIf you have purchased a theme from a different device, please reinstall Keybee Keyboard to sync and use your purchased themes.</string>
     <string name="layout_info">To customize the layout fill the column on the right with the desired letter. \n\nTo customize the pop-up press the underlined letter on the left column and then reorder the special letters with the up and down arrows as you like.</string>
