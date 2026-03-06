@@ -26,23 +26,22 @@ import java.util.List;
 
 import it.keybeeproject.keybee.R;
 import it.keybeeproject.keybee.adapter.PopUpAdapter;
-import it.keybeeproject.keybee.model.CustomButton;
-import it.keybeeproject.keybee.model.CustomButtonSetting;
+import it.keybeeproject.keybee.model.ButtonAction;
 import it.keybeeproject.keybee.utility.PrefData;
 import it.keybeeproject.keybee.utility.TypefaceSpan;
 
 public class CustomButtonsActivity extends AppCompatActivity {//implements IabBroadcastReceiver.IabBroadcastListener {
 
     // List of default custom button settings. Short and long actions
-    List<Pair<CustomButton, CustomButton>> defaultButtonList = Arrays.asList(
-            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
-            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
-            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
-            Pair.create(CustomButton.Disabled, CustomButton.Disabled),
-            Pair.create(CustomButton.Disabled, CustomButton.Settings),
-            Pair.create(CustomButton.Emoji, CustomButton.Disabled),
-            Pair.create(CustomButton.Enter, CustomButton.Disabled),
-            Pair.create(CustomButton.Layout, CustomButton.Disabled)
+    List<Pair<ButtonAction, ButtonAction>> defaultButtonList = Arrays.asList(
+            Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
+            Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
+            Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
+            Pair.create(ButtonAction.Disabled, ButtonAction.Disabled),
+            Pair.create(ButtonAction.Disabled, ButtonAction.Settings),
+            Pair.create(ButtonAction.Emoji, ButtonAction.Disabled),
+            Pair.create(ButtonAction.Enter, ButtonAction.Disabled),
+            Pair.create(ButtonAction.Layout, ButtonAction.Disabled)
             );
     String[] array, array1, a, c, d, e, g, h, i, j, k, l, o, n, r, s, t, u, w, y, z;
     int currentKeyboardLayout;
@@ -198,7 +197,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
         Spin_A0 = findViewById(R.id.Spin_A0);
 
-        A0 = new ArrayAdapter<>(this, R.layout.text_spinner, CustomButton.LABELS);
+        A0 = new ArrayAdapter<>(this, R.layout.text_spinner, ButtonAction.LABELS);
         Spin_A0.setAdapter(A0);
 
         setData();

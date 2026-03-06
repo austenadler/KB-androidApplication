@@ -1,6 +1,6 @@
 package it.keybeeproject.keybee.model;
 
-public enum CustomButton {
+public enum ButtonAction {
     Disabled("?", false),
     Settings("?", false),
     Emoji("?", false),
@@ -131,7 +131,7 @@ public enum CustomButton {
     private final String buttonLabel;
     private final boolean isCharacter;
 
-    CustomButton(String buttonLabel, boolean isCharacter) {
+    ButtonAction(String buttonLabel, boolean isCharacter) {
         this.buttonLabel = buttonLabel;
         this.isCharacter = isCharacter;
     }
@@ -139,7 +139,7 @@ public enum CustomButton {
     public static final String[] LABELS;
 
     static {
-        CustomButton[] values = values();
+        ButtonAction[] values = values();
         LABELS = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             LABELS[i] = values[i].buttonLabel;
