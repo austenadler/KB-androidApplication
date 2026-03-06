@@ -74,6 +74,40 @@
                         />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <it.keybeeproject.keybee.view.ButtonCustom
+                    android:id="@+id/reset"
+                    style="?android:borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reset"
+                    android:gravity="center"
+                    android:layout_marginRight="@dimen/dp40"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/sp14"
+                    android:textColor="@color/colorAccent"
+                    android:layout_weight="1"
+                    />
+
+
+                <it.keybeeproject.keybee.view.ButtonCustom
+                    android:id="@+id/subscribe"
+                    style="?android:borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscribe"
+                    android:layout_marginLeft="@dimen/dp40"
+                    android:textSize="@dimen/sp14"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorAccent"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
