@@ -66,7 +66,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
         customButtonSettingList = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            customButtonSettingList.add(new CustomButtonSetting(this, findViewById(spinnerIds[i]), findViewById(textIds[i]), false, defaultButtonActions[0]));
+//            customButtonSettingList.add(new CustomButtonSetting(this, findViewById(spinnerIds[i]), findViewById(textIds[i]), false, defaultButtonActions[0]));
         }
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

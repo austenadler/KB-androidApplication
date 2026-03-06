@@ -251,6 +251,23 @@
     <string name="Y">Y</string>
     <string name="Z">Z</string>
 
+    <string name="Top1Short">Top #1 Short</string>
+    <string name="Top1Long">Top #1 Long</string>
+    <string name="Top2Short">Top #2 Short</string>
+    <string name="Top2Long">Top #2 Long</string>
+    <string name="Top3Short">Top #3 Short</string>
+    <string name="Top3Long">Top #3 Long</string>
+    <string name="Top4Short">Top #4 Short</string>
+    <string name="Top4Long">Top #4 Long</string>
+    <string name="Bottom1Short">Bottom #1 Short</string>
+    <string name="Bottom1Long">Bottom #1 Long</string>
+    <string name="Bottom2Short">Bottom #2 Short</string>
+    <string name="Bottom2Long">Bottom #2 Long</string>
+    <string name="Bottom3Short">Bottom #3 Short</string>
+    <string name="Bottom3Long">Bottom #3 Long</string>
+    <string name="Bottom4Short">Bottom #4 Short</string>
+    <string name="Bottom4Long">Bottom #4 Long</string>
+
     <string-array name="alphabet">
         <item>@string/A</item>
         <item>@string/B</item>
