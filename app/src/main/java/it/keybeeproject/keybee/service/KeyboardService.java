@@ -551,6 +551,9 @@ public class KeyboardService extends InputMethodService implements
                 // This button is configured to do nothing
                 break;
             case Settings:
+                Intent intentSettings = new Intent(this, SettingsActivity.class);
+                intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentSettings);
                 break;
             case Emoji:
                 setEmojiViewVisible(true);
@@ -713,11 +716,6 @@ public class KeyboardService extends InputMethodService implements
             switch (keyCode) {
                 case KEYCODE_SHIFT:
                     toggleCapsLock();
-                    break;
-                case KEYCODE_SETTINGS:
-                    Intent intentSettings = new Intent(this, SettingsActivity.class);
-                    intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intentSettings);
                     break;
                 case KEYCODE_SPACE:
                     if (isCursorEnabled) {
