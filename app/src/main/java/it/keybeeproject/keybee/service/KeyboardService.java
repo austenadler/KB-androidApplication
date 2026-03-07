@@ -803,7 +803,6 @@ public class KeyboardService extends InputMethodService implements
     private void updateOnShift() {
         for (int buttonPosition = 0; buttonPosition < arrButtons.length; buttonPosition++) {
             if (arrButtons[buttonPosition].getShape() == 1) {
-                // TODO: Capitalize keys at the top
                 arrButtons[buttonPosition].setAllCaps(isShiftOn);
             }
         }
