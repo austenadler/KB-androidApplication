@@ -13,6 +13,7 @@ public enum ButtonAction {
     Emoji("Emoji", false),
     Enter("Enter", false),
     Layout("Layout", false),
+    // TODO: Alignment
     A("A", true),
     B("B", true),
     C("C", true),
@@ -135,7 +136,7 @@ public enum ButtonAction {
     Z2("ż", true),
     Z3("ž", true);
 
-    private final String buttonLabel;
+    public final String buttonLabel;
     private final boolean isCharacter;
 
     ButtonAction(String buttonLabel, boolean isCharacter) {

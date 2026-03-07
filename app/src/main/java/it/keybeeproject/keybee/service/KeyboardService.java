@@ -547,42 +547,46 @@ public class KeyboardService extends InputMethodService implements
         }
     }
 
-    private void handleCustomAction(ButtonAction action) {
+    private char handleCustomAction(ButtonAction action) {
         Log.i("XXX", "Handling action " + action);
         switch (action) {
             case Disabled:
                 // This button is configured to do nothing
                 break;
             case Settings:
+                break;
             case Emoji:
-                setEmojiViewVisible(true);
-                break;
+                return KEYCODE_EMOTICON;
             case Enter:
-                commitOnSeparator();
-                keyDownUp(KeyEvent.KEYCODE_ENTER);
-                break;
+                return KeyEvent.KEYCODE_ENTER;
             case Layout:
+                break;
             default:
-
+                // TODO: XXX
+                return action.buttonLabel.charAt(0);
         }
+        // Do nothing by default
+        return KeyEvent.KEYCODE_UNKNOWN;
     }
 
     private void handleOnClick(ButtonHexagon buttonHexagon) {
+        char keyCode = buttonHexagon.getKeyCode();
+
         // First, check if this is a customizable button
         if (buttonHexagon.isCustomizableButton()) {
             Log.i("XXX", "Handling customizable button");
             // This is a short press, so see what it's configured to do
             ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2);
-            handleCustomAction(action);
-            return;
+            // Update the keycode to whatever the custom action is
+            keyCode = handleCustomAction(action);
         }
-        if (buttonHexagon.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN) {
+        if (keyCode == KeyEvent.KEYCODE_UNKNOWN) {
             return;
         }
 
         try {
 //            Log.w("XXX", "Got button " + buttonHexagon);
-            switch (buttonHexagon.getKeyCode()) {
+            switch (keyCode) {
                 case KEYCODE_SHIFT:
                     isShiftOn = !isShiftOn;
                     isCapsLockOn = false;
@@ -637,7 +641,7 @@ public class KeyboardService extends InputMethodService implements
                 case KEYCODE_ALIGNMENT:
                     break;
                 default:
-                    onClickLetter(buttonHexagon.getKeyCode());
+                    onClickLetter(keyCode);
             }
             PrefData.setIntPrefs(getApplicationContext(), PrefData.KEY_TYPE, currentLayout);
         } catch (Exception e) {
@@ -1317,6 +1321,36 @@ public class KeyboardService extends InputMethodService implements
         }
     }
 
+    private void setCustomButtonIcons(boolean isSearch) {
+        ButtonHexagon[] customButtons = {button1, button3, button5, button7, button36, button37, button38, button39};
+        // Try to figure out what icon each button should have
+        for (int i = 0; i < customButtons.length; i++) {
+            // Check the short press action
+            ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, i * 2);
+            // Check the long press action, if short press is disabled
+            if (action == ButtonAction.Disabled) {
+                action = ButtonAction.helperGetCustomizableButtonConfiguration(this, i * 2 + 1);
+            }
+            
+            switch (action) {
+                case Disabled:
+                    // This button has no single or double press. There is no icon, we can keep going
+                    break;
+                case Settings:
+                    break;
+                case Emoji:
+                    break;
+                case Enter:
+                    customButtons[i].setIcon(isSearch ? R.drawable.ic_search : R.drawable.ic_enter);
+                    break;
+                case Layout:
+                default:
+                    String buttonLabel = action.buttonLabel;
+                    customButtons[i].setText(buttonLabel);
+            }
+        }
+    }
+
     @Override
     public void onStartInputView(EditorInfo editorInfo, boolean restarting) {
         setKeyboardHeight();
@@ -1326,21 +1360,23 @@ public class KeyboardService extends InputMethodService implements
 
         setEmojiViewVisible(false);
 
+        boolean isSearch = false;
+//        if (button38 != null) {
+        switch (editorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
+            case EditorInfo.IME_ACTION_SEARCH:
+//                    button38.setIcon(R.drawable.ic_search);
+                isSearch = true;
+                break;
+            default:
+//                    button38.setIcon(R.drawable.ic_enter);
+        }
+//        }
+        setCustomButtonIcons(isSearch);
+
         composing.setLength(0);
 
         isCapsLockOn = false;
 
-        boolean isSearch = false;
-        if (button38 != null) {
-            switch (editorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
-                case EditorInfo.IME_ACTION_SEARCH:
-                    button38.setIcon(R.drawable.ic_search);
-                    isSearch = true;
-                    break;
-                default:
-                    button38.setIcon(R.drawable.ic_enter);
-            }
-        }
 
         ExtractedTextRequest request = new ExtractedTextRequest();
         request.hintMaxChars = 1;
