@@ -560,7 +560,16 @@ public class KeyboardService extends InputMethodService implements
                 keyDownUp(KeyEvent.KEYCODE_ENTER);
                 break;
             case Layout:
-                return KEYCODE_ALIGNMENT;
+                if (!isFullWidth) {
+                    if (currentAlignment == PrefData.VAL_ALIGN_LEFT) {
+                        currentAlignment = PrefData.VAL_ALIGN_RIGHT;
+                    } else {
+                        currentAlignment++;
+                    }
+                }
+                PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
+                setKeyboardAlignment();
+                break;
             default:
                 onClickLetter(action.buttonLabel.charAt(0));
         }
@@ -709,17 +718,6 @@ public class KeyboardService extends InputMethodService implements
                     Intent intentSettings = new Intent(this, SettingsActivity.class);
                     intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentSettings);
-                    break;
-                case KEYCODE_ALIGNMENT:
-                    if (!isFullWidth) {
-                        if (currentAlignment == PrefData.VAL_ALIGN_LEFT) {
-                            currentAlignment = PrefData.VAL_ALIGN_RIGHT;
-                        } else {
-                            currentAlignment++;
-                        }
-                    }
-                    PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
-                    setKeyboardAlignment();
                     break;
                 case KEYCODE_SPACE:
                     if (isCursorEnabled) {
