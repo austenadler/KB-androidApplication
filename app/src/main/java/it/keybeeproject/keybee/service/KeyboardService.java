@@ -562,8 +562,7 @@ public class KeyboardService extends InputMethodService implements
             case Layout:
                 break;
             default:
-                // TODO: XXX
-                return action.buttonLabel.charAt(0);
+                onClickLetter(action.buttonLabel.charAt(0));
         }
         // Do nothing by default
         return KeyEvent.KEYCODE_UNKNOWN;
@@ -1354,13 +1353,17 @@ public class KeyboardService extends InputMethodService implements
                     // This button has no single or double press. There is no icon, we can keep going
                     break;
                 case Settings:
+                    customButtons[i].setIcon(R.drawable.ic_settings);
                     break;
                 case Emoji:
+                    customButtons[i].setIcon(R.drawable.ic_emoticon);
                     break;
                 case Enter:
                     customButtons[i].setIcon(isSearch ? R.drawable.ic_search : R.drawable.ic_enter);
                     break;
                 case Layout:
+                    // PRINTING
+                    break;
                 default:
                     String buttonLabel = action.buttonLabel;
                     customButtons[i].setText(buttonLabel);
