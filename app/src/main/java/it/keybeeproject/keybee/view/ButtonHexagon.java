@@ -862,6 +862,10 @@ public class ButtonHexagon extends AppCompatButton {
         return customizableIndex != -1;
     }
 
+    public int getCustomizableIndex() {
+        return customizableIndex;
+    }
+
     public void setOnHexagonTouchListener(OnHexagonTouchListener hexagonTouchListener) {
         this.listenerHexagonTouch = hexagonTouchListener;
     }

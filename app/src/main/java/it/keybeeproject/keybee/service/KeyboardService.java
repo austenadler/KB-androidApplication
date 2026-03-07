@@ -42,7 +42,7 @@ import it.keybeeproject.keybee.R;
 import it.keybeeproject.keybee.activity.SettingsActivity;
 import it.keybeeproject.keybee.adapter.EmojiAdapter;
 import it.keybeeproject.keybee.adapter.EmojiPagerAdapter;
-import it.keybeeproject.keybee.model.EmojiFlag;
+import it.keybeeproject.keybee.model.ButtonAction;
 import it.keybeeproject.keybee.model.Theme;
 import it.keybeeproject.keybee.utility.DrawableHelper;
 import it.keybeeproject.keybee.utility.PrefData;
@@ -270,9 +270,7 @@ public class KeyboardService extends InputMethodService implements
 
             @Override
             public void onClick(ButtonHexagon buttonHexagon) {
-                if (buttonHexagon.getKeyCode() != KeyEvent.KEYCODE_UNKNOWN) {
-                    handleOnClick(buttonHexagon);
-                }
+                handleOnClick(buttonHexagon);
             }
 
             @Override
@@ -549,8 +547,41 @@ public class KeyboardService extends InputMethodService implements
         }
     }
 
+    private void handleCustomAction(ButtonAction action) {
+        Log.i("XXX", "Handling action " + action);
+        switch (action) {
+            case Disabled:
+                // This button is configured to do nothing
+                break;
+            case Settings:
+            case Emoji:
+                setEmojiViewVisible(true);
+                break;
+            case Enter:
+                commitOnSeparator();
+                keyDownUp(KeyEvent.KEYCODE_ENTER);
+                break;
+            case Layout:
+            default:
+
+        }
+    }
+
     private void handleOnClick(ButtonHexagon buttonHexagon) {
+        // First, check if this is a customizable button
+        if (buttonHexagon.isCustomizableButton()) {
+            Log.i("XXX", "Handling customizable button");
+            // This is a short press, so see what it's configured to do
+            ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2);
+            handleCustomAction(action);
+            return;
+        }
+        if (buttonHexagon.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN) {
+            return;
+        }
+
         try {
+//            Log.w("XXX", "Got button " + buttonHexagon);
             switch (buttonHexagon.getKeyCode()) {
                 case KEYCODE_SHIFT:
                     isShiftOn = !isShiftOn;

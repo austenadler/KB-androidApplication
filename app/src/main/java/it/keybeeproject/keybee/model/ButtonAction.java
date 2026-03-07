@@ -1,5 +1,12 @@
 package it.keybeeproject.keybee.model;
 
+import android.content.Context;
+import android.util.Log;
+
+import java.util.List;
+
+import it.keybeeproject.keybee.utility.PrefData;
+
 public enum ButtonAction {
     Disabled("Disabled", false),
     Settings("Settings", false),
@@ -143,6 +150,25 @@ public enum ButtonAction {
         LABELS = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             LABELS[i] = values[i].buttonLabel;
+        }
+    }
+
+    /**
+     * Helper function to get the setting value for some index
+     */
+    public static ButtonAction helperGetCustomizableButtonConfiguration(Context context, int idx) {
+        List<String> settings = PrefData.getArrayListPref(context, PrefData.CUSTOM_BUTTONS);
+        if (settings == null) {
+            return ButtonAction.Disabled;
+        }
+        String buttonActionString = settings.get(idx);
+        if (buttonActionString == null) {
+            return ButtonAction.Disabled;
+        }
+        try {
+            return ButtonAction.valueOf(buttonActionString);
+        } catch (IllegalArgumentException e) {
+            return ButtonAction.Disabled;
         }
     }
 }
