@@ -286,7 +286,7 @@ public class ButtonHexagon extends AppCompatButton {
                     vertexY[2] = bottom;
                     vertexY[3] = bottom;
 
-                    drawOnUpperHalfHexagonCanvas(canvas);
+                    drawOnHalfHexagonCanvas(canvas);
 
                     break;
 
@@ -303,6 +303,8 @@ public class ButtonHexagon extends AppCompatButton {
                     vertexY[1] = top;
                     vertexY[2] = bottom;
                     vertexY[3] = bottom;
+
+                    drawOnHalfHexagonCanvas(canvas);
                     break;
             }
 
@@ -324,7 +326,7 @@ public class ButtonHexagon extends AppCompatButton {
 
     }
 
-    private void drawOnUpperHalfHexagonCanvas(Canvas canvas) {
+    private void drawOnHalfHexagonCanvas(Canvas canvas) {
         try {
             if (iconResId != 0) {
                 colorIconBottomLine = serviceKeyboard.getCurrentTheme().getIconColor();
