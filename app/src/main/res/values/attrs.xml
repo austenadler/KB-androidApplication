@@ -12,7 +12,7 @@
 		<attr name="longClickEnabled" format="boolean"/>
 		<attr name="isSpecialKey" format="boolean"/>
 		<attr name="icon" format="reference"/>
-		<attr name="customizationIndex" format="integer"/>
+		<attr name="customizableIndex" format="integer"/>
 	</declare-styleable>
 
 	<declare-styleable name="CustomFont">

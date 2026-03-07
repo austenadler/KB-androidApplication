@@ -58,7 +58,7 @@
             android:layout_marginLeft="0dp"
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
-            app:customizationIndex="0"
+            app:customizableIndex="0"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -76,7 +76,7 @@
             android:layout_alignLeft="@id/button2"
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
-            app:customizationIndex="1"
+            app:customizableIndex="1"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -94,7 +94,7 @@
             android:layout_alignLeft="@id/button4"
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
-            app:customizationIndex="2"
+            app:customizableIndex="2"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -112,7 +112,7 @@
             android:layout_alignLeft="@id/button6"
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
-            app:customizationIndex="3"
+            app:customizableIndex="3"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -361,7 +361,7 @@
             app:hexagonShape="upper_half"
             app:icon="@drawable/ic_settings"
             app:longClickEnabled="true"
-            app:customizationIndex="4"
+            app:customizableIndex="4"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -371,7 +371,7 @@
             android:layout_alignLeft="@id/button30"
             app:hexagonShape="upper_half"
             app:icon="@drawable/ic_emoticon"
-            app:customizationIndex="5"
+            app:customizableIndex="5"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -381,7 +381,7 @@
             android:layout_alignLeft="@id/button32"
             app:hexagonShape="upper_half"
             app:icon="@drawable/ic_enter"
-            app:customizationIndex="6"
+            app:customizableIndex="6"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -392,7 +392,7 @@
             app:hexagonShape="upper_half"
             app:icon="@drawable/ic_align_left"
             app:longClickEnabled="true"
-            app:customizationIndex="7"
+            app:customizableIndex="7"
             app:previewEnabled="false" />
 
     </RelativeLayout>
