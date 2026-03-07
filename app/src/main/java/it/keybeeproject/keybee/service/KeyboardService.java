@@ -926,7 +926,12 @@ public class KeyboardService extends InputMethodService implements
                         arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeightHalf * .35f);
                         break;
                     default:
-                        arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeight * .6f);
+                        if (arrButtons[i].isCustomizableButton()) {
+                            // Customizable buttons are half the size
+                            arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeightHalf * .8f);
+                        } else {
+                            arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeight * .6f);
+                        }
                 }
                 setButtonText(i);
             }
