@@ -192,7 +192,7 @@ public class ButtonHexagon extends AppCompatButton {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
+// TODO: Debug why this isn't drawing text
         if (isActionDown) {
 
             canvas.drawPath(path, paintSelection);

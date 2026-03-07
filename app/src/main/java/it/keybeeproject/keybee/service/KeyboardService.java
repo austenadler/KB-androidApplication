@@ -585,7 +585,6 @@ public class KeyboardService extends InputMethodService implements
 
         // First, check if this is a customizable button
         if (buttonHexagon.isCustomizableButton()) {
-            Log.i("XXX", "Handling customizable button");
             // This is a short press, so see what it's configured to do
             ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2);
             // Update the keycode to whatever the custom action is
@@ -596,7 +595,6 @@ public class KeyboardService extends InputMethodService implements
         }
 
         try {
-//            Log.w("XXX", "Got button " + buttonHexagon);
             switch (keyCode) {
                 case KEYCODE_SHIFT:
                     isShiftOn = !isShiftOn;
@@ -805,6 +803,7 @@ public class KeyboardService extends InputMethodService implements
     private void updateOnShift() {
         for (int buttonPosition = 0; buttonPosition < arrButtons.length; buttonPosition++) {
             if (arrButtons[buttonPosition].getShape() == 1) {
+                // TODO: Capitalize keys at the top
                 arrButtons[buttonPosition].setAllCaps(isShiftOn);
             }
         }
