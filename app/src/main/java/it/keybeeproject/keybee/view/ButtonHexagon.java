@@ -49,7 +49,7 @@ public class ButtonHexagon extends AppCompatButton {
 
     private int[] vertexX, vertexY, location;
     private int modeHexagon /*  1:full, 2:upper_half, 3:lower_half  */, previewWidth, popupItemWidth, previewHeight, previewMarginLeft,
-            wd2, wd4, hd2, lastId, iconResId, mainCharPosition = 0, colorIconFullHexagon, colorIconBottomLine;
+            wd2, wd4, hd2, lastId, iconResId, mainCharPosition = 0, colorIconFullHexagon, colorIconBottomLine, customizationIndex;
     private float previewTextSize, popupTextSize;
     private final long DELAY_LONG_CLICK = 500, DELAY_PREVIEW_DISMISS = 90, DELAY_POPUP_DISPLAY = 275,
             DELAY_HOVER_RESPONSE = 90;
@@ -111,6 +111,7 @@ public class ButtonHexagon extends AppCompatButton {
                 isLongClickEnabled = typedArray.getBoolean(R.styleable.ButtonHexagon_longClickEnabled, false);
                 isSpecialKey = typedArray.getBoolean(R.styleable.ButtonHexagon_isSpecialKey, false);
                 iconResId = typedArray.getResourceId(R.styleable.ButtonHexagon_icon, 0);
+                customizationIndex = typedArray.getInteger(R.styleable.ButtonHexagon_customizationIndex, -1);
 
                 initRepetitiveRunnable();
 
@@ -855,6 +856,10 @@ public class ButtonHexagon extends AppCompatButton {
 
     public char getKeyCode() {
         return keyCode;
+    }
+
+    public boolean isCustomizedButton() {
+        return customizationIndex != -1;
     }
 
     public void setOnHexagonTouchListener(OnHexagonTouchListener hexagonTouchListener) {
