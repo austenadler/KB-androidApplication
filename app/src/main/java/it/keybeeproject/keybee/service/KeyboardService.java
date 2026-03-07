@@ -275,10 +275,7 @@ public class KeyboardService extends InputMethodService implements
 
             @Override
             public boolean onLongClick(ButtonHexagon buttonHexagon) {
-                if (buttonHexagon.getKeyCode() != KeyEvent.KEYCODE_UNKNOWN) {
-                    callTapEffect();
-                    handleOnLongClick(buttonHexagon);
-                }
+                handleOnLongClick(buttonHexagon);
                 return true;
             }
 
@@ -556,9 +553,12 @@ public class KeyboardService extends InputMethodService implements
             case Settings:
                 break;
             case Emoji:
-                return KEYCODE_EMOTICON;
+                setEmojiViewVisible(true);
+                break;
             case Enter:
-                return KeyEvent.KEYCODE_ENTER;
+                commitOnSeparator();
+                keyDownUp(KeyEvent.KEYCODE_ENTER);
+                break;
             case Layout:
                 break;
             default:
@@ -686,6 +686,20 @@ public class KeyboardService extends InputMethodService implements
     }
 
     private void handleOnLongClick(ButtonHexagon buttonHexagon) {
+        // First, check if this is a customizable button
+        if (buttonHexagon.isCustomizableButton()) {
+            Log.i("XXX", "Handling customizable button");
+            // This is a short press, so see what it's configured to do
+            ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2 + 1);
+            // Update the keycode to whatever the custom action is
+            handleCustomAction(action);
+            return;
+        }
+
+        if (buttonHexagon.getKeyCode() != KeyEvent.KEYCODE_UNKNOWN) {
+            callTapEffect();
+        }
+
         try {
             switch (buttonHexagon.getKeyCode()) {
                 case KEYCODE_SHIFT:
@@ -928,6 +942,9 @@ public class KeyboardService extends InputMethodService implements
     }
 
     private void setButtonText(int buttonPosition) {
+        if (buttonPosition == 0) {
+            return;
+        }
 
         arrButtons[buttonPosition].setKeyCode(arrKeyCode[buttonPosition][currentLayout][currentLanguage]);
 
