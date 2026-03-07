@@ -192,7 +192,6 @@ public class ButtonHexagon extends AppCompatButton {
 
     @Override
     protected void onDraw(Canvas canvas) {
-// TODO: Debug why this isn't drawing text
         if (isActionDown) {
 
             canvas.drawPath(path, paintSelection);
@@ -239,6 +238,11 @@ public class ButtonHexagon extends AppCompatButton {
             wd4 = width / 4; // wd4(width divided by 4)
             hd2 = height / 2; // hd2(height divided by 2)
 
+            path = new Path();
+
+            paintSelection = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paintSelection.setStyle(Paint.Style.FILL);
+
             switch (modeHexagon) {
                 case 1: //  Full hexagon
                     vertexX = new int[6];
@@ -258,16 +262,12 @@ public class ButtonHexagon extends AppCompatButton {
                     vertexY[4] = bottom;
                     vertexY[5] = bottom - hd2;
 
-                    path = new Path();
                     path.moveTo(vertexX[0], vertexY[0]);
                     for (int i = 1; i < vertexX.length; i++) {
                         path.lineTo(vertexX[i], vertexY[i]);
                     }
                     path.lineTo(vertexX[0], vertexY[0]);
                     path.close();
-
-                    paintSelection = new Paint(Paint.ANTI_ALIAS_FLAG);
-                    paintSelection.setStyle(Paint.Style.FILL);
 
                     drawOnCanvas(canvas);
                     break;
@@ -287,7 +287,6 @@ public class ButtonHexagon extends AppCompatButton {
                     vertexY[3] = bottom;
 
                     drawOnHalfHexagonCanvas(canvas);
-
                     break;
 
                 case 3: //  Lower half hexagon
@@ -328,6 +327,12 @@ public class ButtonHexagon extends AppCompatButton {
 
     private void drawOnHalfHexagonCanvas(Canvas canvas) {
         try {
+            if (isSpecialKey) {
+                setTextColor(serviceKeyboard.getCurrentTheme().getSpecialKeyFontColor());
+            } else {
+                setTextColor(serviceKeyboard.getCurrentTheme().getDefaultKeyFontColor());
+            }
+
             if (iconResId != 0) {
                 colorIconBottomLine = serviceKeyboard.getCurrentTheme().getIconColor();
                 setTextColor(colorIconBottomLine);
