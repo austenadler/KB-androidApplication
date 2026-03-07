@@ -1,5 +1,7 @@
 package it.keybeeproject.keybee.service;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,7 +44,7 @@ import it.keybeeproject.keybee.R;
 import it.keybeeproject.keybee.activity.SettingsActivity;
 import it.keybeeproject.keybee.adapter.EmojiAdapter;
 import it.keybeeproject.keybee.adapter.EmojiPagerAdapter;
-import it.keybeeproject.keybee.model.EmojiFlag;
+import it.keybeeproject.keybee.model.ButtonAction;
 import it.keybeeproject.keybee.model.Theme;
 import it.keybeeproject.keybee.utility.DrawableHelper;
 import it.keybeeproject.keybee.utility.PrefData;
@@ -52,6 +54,8 @@ import it.keybeeproject.keybee.view.TextViewCustom;
 
 import static android.view.inputmethod.InputConnection.CURSOR_UPDATE_MONITOR;
 import static androidx.annotation.Dimension.SP;
+
+import com.google.android.gms.common.util.ArrayUtils;
 
 /**
  * Created by c161 on 22/07/16.
@@ -100,13 +104,16 @@ public class KeyboardService extends InputMethodService implements
     private long currentRepeatInterval = ButtonHexagon.INTERVAL_REPEAT_INITIAL;
     private final int buttonGap = 2; // Must be an even number
     //	private final int buttonGap = 0; // Must be an even number
+
+    // A space after one of these characters should be capitalized
+    public static final Character[] PUNCTUATION_CHARS_REQUIRING_CAPITALIZATION = {'.', '!', '?'};
     private final int cursorThresholdH = 20;
     private final int cursorThresholdV = 80;
     private int keyboardTopPadding, keyboardHeight, keyboardWidth, currentLanguageLayout, currentLanguage, currentLayout,
             currentAlignment, lastMoveId = -1, lastDownId, bgEmoji, hMove, candidateHeight = 0;
     private boolean isTopGap,isFullWidth, isShiftOn, isCapsLockOn, isSoundEnabled, isVibraEnabled, isDotSpaceEnabled,
             isPreviewOn, isMoved, isSizeChanged, isTwipeEnabled, isFirstButtonReset, isCursorEnabled, isCursorModeOn,
-            isTextSuggestionEnabled, isCandidateClicked, isAutocapitalizationEnable;
+            isTextSuggestionEnabled, isCandidateClicked, isAutocapitalizationEnable, isMainAfterSpaceEnabled;
     private boolean isActionDownCalled = false; // If user clicks outside of keyboard then text should not appear.For that ACTION_DOWN will be called but flag will not be true so that ACTION_UP will be called but due to condition code will not be execute.
     private final char space = 32;
     private float lastX, lastY, keyboardSize;
@@ -203,6 +210,7 @@ public class KeyboardService extends InputMethodService implements
         isSoundEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_SOUND_ENABLED_B);
         isVibraEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_VIBRA_ENABLED_B);
         isDotSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_DOT_SPACE_ENABLED_B, true);
+        isMainAfterSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_MAIN_AFTER_SPACE_ENABLED_B, false);
         isPreviewOn = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_PREVIEW_ENABLED_B, true);
         isTwipeEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_TWIPE_ENABLED_B, true);
         isCursorEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_CURSOR_ENABLED_B, true);
@@ -270,17 +278,12 @@ public class KeyboardService extends InputMethodService implements
 
             @Override
             public void onClick(ButtonHexagon buttonHexagon) {
-                if (buttonHexagon.getKeyCode() != KeyEvent.KEYCODE_UNKNOWN) {
-                    handleOnClick(buttonHexagon);
-                }
+                handleOnClick(buttonHexagon);
             }
 
             @Override
             public boolean onLongClick(ButtonHexagon buttonHexagon) {
-                if (buttonHexagon.getKeyCode() != KeyEvent.KEYCODE_UNKNOWN) {
-                    callTapEffect();
-                    handleOnLongClick(buttonHexagon);
-                }
+                handleOnLongClick(buttonHexagon);
                 return true;
             }
 
@@ -549,9 +552,80 @@ public class KeyboardService extends InputMethodService implements
         }
     }
 
+    private char handleCustomAction(ButtonAction action) {
+        if (action.isCharacter) {
+            onClickLetter(action.buttonLabel.charAt(0));
+        } else {
+            switch (action) {
+                case Disabled:
+                    // This button is configured to do nothing
+                    break;
+                case Settings:
+                    Intent intentSettings = new Intent(this, SettingsActivity.class);
+                    intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentSettings);
+                    break;
+                case Emoji:
+                    setEmojiViewVisible(true);
+                    break;
+                case Paste:
+                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    if (clipboardManager == null) {
+                        Log.w(TAG, "Could not get clipboard manager");
+                        break;
+                    }
+                    ClipData clipData = clipboardManager.getPrimaryClip();
+                    if (clipData == null) {
+                        Log.i(TAG, "No primary clip data");
+                        break;
+                    }
+                    ClipData.Item item = clipData.getItemAt(0);
+                    if (item == null) {
+                        Log.w(TAG, "Nothing in primary clip data");
+                        break;
+                    }
+                    CharSequence charSequence = item.getText();
+                    getCurrentInputConnection().commitText(charSequence, 1);
+                    break;
+                case Enter:
+                    commitOnSeparator();
+                    keyDownUp(KeyEvent.KEYCODE_ENTER);
+                    break;
+                case Layout:
+                    if (!isFullWidth) {
+                        if (currentAlignment == PrefData.VAL_ALIGN_LEFT) {
+                            currentAlignment = PrefData.VAL_ALIGN_RIGHT;
+                        } else {
+                            currentAlignment++;
+                        }
+                    }
+                    PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
+                    setKeyboardAlignment();
+                    break;
+                default:
+                    Log.e(TAG, "Unhandled custom non-character button action " + action);
+            }
+        }
+        // Do nothing by default
+        return KeyEvent.KEYCODE_UNKNOWN;
+    }
+
     private void handleOnClick(ButtonHexagon buttonHexagon) {
+        char keyCode = buttonHexagon.getKeyCode();
+
+        // First, check if this is a customizable button
+        if (buttonHexagon.isCustomizableButton()) {
+            // This is a short press, so see what it's configured to do
+            ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2);
+            // Update the keycode to whatever the custom action is
+            keyCode = handleCustomAction(action);
+        }
+        if (keyCode == KeyEvent.KEYCODE_UNKNOWN) {
+            return;
+        }
+
         try {
-            switch (buttonHexagon.getKeyCode()) {
+            switch (keyCode) {
                 case KEYCODE_SHIFT:
                     isShiftOn = !isShiftOn;
                     isCapsLockOn = false;
@@ -573,12 +647,21 @@ public class KeyboardService extends InputMethodService implements
                 case KeyEvent.KEYCODE_DEL:
                     updateOnBackSpace();
 
-                    /**
-                     * Check for dot + space
-                     */
                     String currentText = getCurrentInputConnection().getTextBeforeCursor(2, 0).toString();
                     if (currentText != null && currentText.length() > 1) {
-                        if (isDotSpaceEnabled && currentText.equals(". ") && !isShiftOn) {
+                        /**
+                         * Check for punctuation + space
+                         */
+                        if (isMainAfterSpaceEnabled &&
+                                currentText.charAt(1) == ' ' &&
+                                ArrayUtils.contains(PUNCTUATION_CHARS_REQUIRING_CAPITALIZATION, currentText.charAt(0))) {
+                            isShiftOn = true;
+                            updateOnShift();
+                        }
+                        /**
+                         * Check for dot + space
+                         */
+                        else if (isDotSpaceEnabled && currentText.equals(". ") && !isShiftOn) {
                             isShiftOn = true;
                             updateOnShift();
                         } else if (isShiftOn && !isCapsLockOn) {
@@ -606,7 +689,7 @@ public class KeyboardService extends InputMethodService implements
                 case KEYCODE_ALIGNMENT:
                     break;
                 default:
-                    onClickLetter(buttonHexagon.getKeyCode());
+                    onClickLetter(keyCode);
             }
             PrefData.setIntPrefs(getApplicationContext(), PrefData.KEY_TYPE, currentLayout);
         } catch (Exception e) {
@@ -651,8 +734,22 @@ public class KeyboardService extends InputMethodService implements
     }
 
     private void handleOnLongClick(ButtonHexagon buttonHexagon) {
+        char keyCode = buttonHexagon.getKeyCode();
+
+        // First, check if this is a customizable button
+        if (buttonHexagon.isCustomizableButton()) {
+            // This is a short press, so see what it's configured to do
+            ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2 + 1);
+            // Update the keycode to whatever the custom action is
+            keyCode = handleCustomAction(action);
+        }
+
+        if (keyCode != KeyEvent.KEYCODE_UNKNOWN) {
+            callTapEffect();
+        }
+
         try {
-            switch (buttonHexagon.getKeyCode()) {
+            switch (keyCode) {
                 case KEYCODE_SHIFT:
                     toggleCapsLock();
                     break;
@@ -668,9 +765,10 @@ public class KeyboardService extends InputMethodService implements
                         } else {
                             currentAlignment++;
                         }
+
+                        PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
+                        setKeyboardAlignment();
                     }
-                    PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
-                    setKeyboardAlignment();
                     break;
                 case KEYCODE_SPACE:
                     if (isCursorEnabled) {
@@ -759,7 +857,7 @@ public class KeyboardService extends InputMethodService implements
 
     private void updateOnShift() {
         for (int buttonPosition = 0; buttonPosition < arrButtons.length; buttonPosition++) {
-            if (arrButtons[buttonPosition].getShape() == 1) {
+            if (arrButtons[buttonPosition].getShape() == 1 || arrButtons[buttonPosition].customizableDisplayAction(this).isCharacter) {
                 arrButtons[buttonPosition].setAllCaps(isShiftOn);
             }
         }
@@ -879,7 +977,12 @@ public class KeyboardService extends InputMethodService implements
                         arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeightHalf * .35f);
                         break;
                     default:
-                        arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeight * .6f);
+                        if (arrButtons[i].isCustomizableButton()) {
+                            // Customizable buttons are half the size
+                            arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeightHalf * .8f);
+                        } else {
+                            arrButtons[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, buttonHeight * .6f);
+                        }
                 }
                 setButtonText(i);
             }
@@ -893,6 +996,9 @@ public class KeyboardService extends InputMethodService implements
     }
 
     private void setButtonText(int buttonPosition) {
+        if (buttonPosition == 0 || arrButtons[buttonPosition].isCustomizableButton()) {
+            return;
+        }
 
         arrButtons[buttonPosition].setKeyCode(arrKeyCode[buttonPosition][currentLayout][currentLanguage]);
 
@@ -1188,23 +1294,21 @@ public class KeyboardService extends InputMethodService implements
                 viewKeyboard.setGravity(Gravity.RIGHT);
                 relativeKeyboardContainer.setGravity(Gravity.RIGHT|Gravity.BOTTOM);
                 relativeEmoji.setGravity(Gravity.RIGHT);
-                button39.setIcon(R.drawable.ic_align_right);
                 break;
             case PrefData.VAL_ALIGN_CENTER:
                 viewKeyboard.setGravity(Gravity.CENTER_HORIZONTAL);
                 relativeKeyboardContainer.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
                 relativeEmoji.setGravity(Gravity.CENTER_HORIZONTAL);
-                button39.setIcon(isFullWidth ? R.drawable.ic_align_full : R.drawable.ic_align_center);
                 break;
             case PrefData.VAL_ALIGN_LEFT:
                 viewKeyboard.setGravity(Gravity.LEFT);
                 relativeKeyboardContainer.setGravity(Gravity.LEFT|Gravity.BOTTOM);
                 relativeEmoji.setGravity(Gravity.LEFT);
-                button39.setIcon(R.drawable.ic_align_left);
                 break;
             default:
                 break;
         }
+        setCustomButtonIcons(null);
     }
 
     private void setKeyboardHeight() {
@@ -1286,6 +1390,63 @@ public class KeyboardService extends InputMethodService implements
         }
     }
 
+    private void setCustomButtonIcons(Boolean isSearch) {
+        int alignmentIconId = R.drawable.ic_align_full;
+        currentAlignment = isFullWidth ? PrefData.VAL_ALIGN_CENTER
+                : PrefData.getIntPrefs(this, PrefData.KEY_ALIGN_I, PrefData.VAL_ALIGN_CENTER);
+        switch (currentAlignment) {
+            case PrefData.VAL_ALIGN_RIGHT:
+                alignmentIconId = R.drawable.ic_align_right;
+                break;
+            case PrefData.VAL_ALIGN_CENTER:
+                alignmentIconId = isFullWidth ? R.drawable.ic_align_full : R.drawable.ic_align_center;
+                break;
+            case PrefData.VAL_ALIGN_LEFT:
+                alignmentIconId = R.drawable.ic_align_left;
+                break;
+            default:
+                break;
+        }
+
+        ButtonHexagon[] customButtons = {button1, button3, button5, button7, button36, button37, button38, button39};
+        // Try to figure out what icon each button should have
+        for (ButtonHexagon customButton : customButtons) {
+            // Check the short press action
+            ButtonAction displayAction = customButton.customizableDisplayAction(this);
+            switch (displayAction) {
+                case Disabled:
+                    // This button has no single or double press. There is no icon, we can keep going
+                    customButton.setText("");
+                    customButton.setIcon(0);
+                    break;
+                case Settings:
+                    customButton.setText("");
+                    customButton.setIcon(R.drawable.ic_settings);
+                    break;
+                case Emoji:
+                    customButton.setText("");
+                    customButton.setIcon(R.drawable.ic_emoticon);
+                    break;
+                case Enter:
+                    customButton.setText("");
+                    customButton.setIcon((isSearch != null && isSearch) ? R.drawable.ic_search : R.drawable.ic_enter);
+                    break;
+                case Paste:
+                    customButton.setText("");
+                    customButton.setIcon(R.drawable.ic_paste);
+                    break;
+                case Layout:
+                    customButton.setText("");
+                    customButton.setIcon(alignmentIconId);
+                    break;
+                default:
+                    String buttonLabel = displayAction.buttonLabel;
+                    customButton.setText(buttonLabel);
+                    customButton.setIcon(0);
+            }
+        }
+    }
+
     @Override
     public void onStartInputView(EditorInfo editorInfo, boolean restarting) {
         setKeyboardHeight();
@@ -1300,16 +1461,13 @@ public class KeyboardService extends InputMethodService implements
         isCapsLockOn = false;
 
         boolean isSearch = false;
-        if (button38 != null) {
-            switch (editorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
-                case EditorInfo.IME_ACTION_SEARCH:
-                    button38.setIcon(R.drawable.ic_search);
-                    isSearch = true;
-                    break;
-                default:
-                    button38.setIcon(R.drawable.ic_enter);
-            }
+        switch (editorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
+            case EditorInfo.IME_ACTION_SEARCH:
+                isSearch = true;
+                break;
+            default:
         }
+        setCustomButtonIcons(isSearch);
 
         ExtractedTextRequest request = new ExtractedTextRequest();
         request.hintMaxChars = 1;
@@ -1445,9 +1603,25 @@ public class KeyboardService extends InputMethodService implements
         }
 
         /**
+         * Check for space after any character, and switch to abc layout
+         */
+        if (isMainAfterSpaceEnabled && code == space) {
+            // If anyone presses space and the previous character was punctuation, then switch back to main
+            // We should enable shift for punctuation that should be capitalized after, if they want autocapitalization
+            Character previousChar = inputConnection.getTextBeforeCursor(2, 0).charAt(0);
+            if (ArrayUtils.contains(PUNCTUATION_CHARS_REQUIRING_CAPITALIZATION, previousChar)) {
+                isShiftOn = true;
+                updateOnShift();
+            }
+
+            if (currentLayout == PrefData.VAL_LAYOUT_NUMBER || currentLayout == PrefData.VAL_LAYOUT_SYMBOL) {
+                updateOnAbc();
+            }
+        }
+        /**
          * Check for dot + space
          */
-        if (isDotSpaceEnabled && code == space && inputConnection.getTextBeforeCursor(2, 0).charAt(0) == '.' && !isShiftOn) {
+        else if (isDotSpaceEnabled && code == space && inputConnection.getTextBeforeCursor(2, 0).charAt(0) == '.' && !isShiftOn) {
             isShiftOn = true;
             updateOnShift();
             if (currentLayout == PrefData.VAL_LAYOUT_NUMBER || currentLayout == PrefData.VAL_LAYOUT_SYMBOL) {
@@ -1523,6 +1697,9 @@ public class KeyboardService extends InputMethodService implements
                 break;
             case PrefData.KEY_IS_DOT_SPACE_ENABLED_B:
                 isDotSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_DOT_SPACE_ENABLED_B);
+                break;
+            case PrefData.KEY_IS_MAIN_AFTER_SPACE_ENABLED_B:
+                isMainAfterSpaceEnabled = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_MAIN_AFTER_SPACE_ENABLED_B);
                 break;
             case PrefData.KEY_IS_PREVIEW_ENABLED_B:
                 isPreviewOn = PrefData.getBooleanPrefs(this, PrefData.KEY_IS_PREVIEW_ENABLED_B);
