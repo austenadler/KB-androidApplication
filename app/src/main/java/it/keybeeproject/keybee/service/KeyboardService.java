@@ -1239,23 +1239,21 @@ public class KeyboardService extends InputMethodService implements
                 viewKeyboard.setGravity(Gravity.RIGHT);
                 relativeKeyboardContainer.setGravity(Gravity.RIGHT|Gravity.BOTTOM);
                 relativeEmoji.setGravity(Gravity.RIGHT);
-                button39.setIcon(R.drawable.ic_align_right);
                 break;
             case PrefData.VAL_ALIGN_CENTER:
                 viewKeyboard.setGravity(Gravity.CENTER_HORIZONTAL);
                 relativeKeyboardContainer.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM);
                 relativeEmoji.setGravity(Gravity.CENTER_HORIZONTAL);
-                button39.setIcon(isFullWidth ? R.drawable.ic_align_full : R.drawable.ic_align_center);
                 break;
             case PrefData.VAL_ALIGN_LEFT:
                 viewKeyboard.setGravity(Gravity.LEFT);
                 relativeKeyboardContainer.setGravity(Gravity.LEFT|Gravity.BOTTOM);
                 relativeEmoji.setGravity(Gravity.LEFT);
-                button39.setIcon(R.drawable.ic_align_left);
                 break;
             default:
                 break;
         }
+        setCustomButtonIcons(null);
     }
 
     private void setKeyboardHeight() {
@@ -1337,7 +1335,24 @@ public class KeyboardService extends InputMethodService implements
         }
     }
 
-    private void setCustomButtonIcons(boolean isSearch) {
+    private void setCustomButtonIcons(Boolean isSearch) {
+        int alignmentIconId = R.drawable.ic_align_full;
+        currentAlignment = isFullWidth ? PrefData.VAL_ALIGN_CENTER
+                : PrefData.getIntPrefs(this, PrefData.KEY_ALIGN_I, PrefData.VAL_ALIGN_CENTER);
+        switch (currentAlignment) {
+            case PrefData.VAL_ALIGN_RIGHT:
+                alignmentIconId = R.drawable.ic_align_right;
+                break;
+            case PrefData.VAL_ALIGN_CENTER:
+                alignmentIconId = isFullWidth ? R.drawable.ic_align_full : R.drawable.ic_align_center;
+                break;
+            case PrefData.VAL_ALIGN_LEFT:
+                alignmentIconId = R.drawable.ic_align_left;
+                break;
+            default:
+                break;
+        }
+
         ButtonHexagon[] customButtons = {button1, button3, button5, button7, button36, button37, button38, button39};
         // Try to figure out what icon each button should have
         for (int i = 0; i < customButtons.length; i++) {
@@ -1359,10 +1374,13 @@ public class KeyboardService extends InputMethodService implements
                     customButtons[i].setIcon(R.drawable.ic_emoticon);
                     break;
                 case Enter:
-                    customButtons[i].setIcon(isSearch ? R.drawable.ic_search : R.drawable.ic_enter);
+                    // They will send isSearch if they know this is search or not
+                    if (isSearch != null) {
+                        customButtons[i].setIcon(isSearch ? R.drawable.ic_search : R.drawable.ic_enter);
+                    }
                     break;
                 case Layout:
-                    // PRINTING
+                    customButtons[i].setIcon(alignmentIconId);
                     break;
                 default:
                     String buttonLabel = action.buttonLabel;
@@ -1381,16 +1399,12 @@ public class KeyboardService extends InputMethodService implements
         setEmojiViewVisible(false);
 
         boolean isSearch = false;
-//        if (button38 != null) {
         switch (editorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
             case EditorInfo.IME_ACTION_SEARCH:
-//                    button38.setIcon(R.drawable.ic_search);
                 isSearch = true;
                 break;
             default:
-//                    button38.setIcon(R.drawable.ic_enter);
         }
-//        }
         setCustomButtonIcons(isSearch);
 
         composing.setLength(0);
