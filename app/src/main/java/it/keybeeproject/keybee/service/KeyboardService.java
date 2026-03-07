@@ -546,35 +546,39 @@ public class KeyboardService extends InputMethodService implements
 
     private char handleCustomAction(ButtonAction action) {
         Log.i("XXX", "Handling action " + action);
-        switch (action) {
-            case Disabled:
-                // This button is configured to do nothing
-                break;
-            case Settings:
-                Intent intentSettings = new Intent(this, SettingsActivity.class);
-                intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentSettings);
-                break;
-            case Emoji:
-                setEmojiViewVisible(true);
-                break;
-            case Enter:
-                commitOnSeparator();
-                keyDownUp(KeyEvent.KEYCODE_ENTER);
-                break;
-            case Layout:
-                if (!isFullWidth) {
-                    if (currentAlignment == PrefData.VAL_ALIGN_LEFT) {
-                        currentAlignment = PrefData.VAL_ALIGN_RIGHT;
-                    } else {
-                        currentAlignment++;
+        if (action.isCharacter) {
+            onClickLetter(action.buttonLabel.charAt(0));
+        } else {
+            switch (action) {
+                case Disabled:
+                    // This button is configured to do nothing
+                    break;
+                case Settings:
+                    Intent intentSettings = new Intent(this, SettingsActivity.class);
+                    intentSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentSettings);
+                    break;
+                case Emoji:
+                    setEmojiViewVisible(true);
+                    break;
+                case Enter:
+                    commitOnSeparator();
+                    keyDownUp(KeyEvent.KEYCODE_ENTER);
+                    break;
+                case Layout:
+                    if (!isFullWidth) {
+                        if (currentAlignment == PrefData.VAL_ALIGN_LEFT) {
+                            currentAlignment = PrefData.VAL_ALIGN_RIGHT;
+                        } else {
+                            currentAlignment++;
+                        }
                     }
-                }
-                PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
-                setKeyboardAlignment();
-                break;
-            default:
-                onClickLetter(action.buttonLabel.charAt(0));
+                    PrefData.setIntPrefs(this, PrefData.KEY_ALIGN_I, currentAlignment);
+                    setKeyboardAlignment();
+                    break;
+                default:
+                    Log.e(TAG, "Unhandled custom non-character button action " + action);
+            }
         }
         // Do nothing by default
         return KeyEvent.KEYCODE_UNKNOWN;

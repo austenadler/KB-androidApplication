@@ -136,7 +136,7 @@ public enum ButtonAction {
     Z3("ž", true);
 
     public final String buttonLabel;
-    private final boolean isCharacter;
+    public final boolean isCharacter;
 
     ButtonAction(String buttonLabel, boolean isCharacter) {
         this.buttonLabel = buttonLabel;
