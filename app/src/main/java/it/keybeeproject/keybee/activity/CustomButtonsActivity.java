@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -175,8 +176,19 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
                     this,
                     findViewById(spinnerIds[i]),
                     findViewById(textIds[i])
-//                    ButtonAction.valueOf(currentSettings.get(i))
             );
+            customButtonSettingList[i].spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    saveSettings();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
 
         setData();
