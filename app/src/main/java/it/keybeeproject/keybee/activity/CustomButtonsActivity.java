@@ -147,7 +147,7 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
     private void saveSettings() {
         ArrayList<String> newSettings = new ArrayList<>();
         for (int i = 0; i < NUM_CUSTOM_BUTTON_SETTINGS; i++) {
-            newSettings.add(customButtonSettingList[i].spinner.getSelectedItem().toString());
+            newSettings.add(ButtonAction.values()[customButtonSettingList[i].spinner.getSelectedItemPosition()].name());
         }
         PrefData.setArrayListPref(CustomButtonsActivity.this, PrefData.CUSTOM_BUTTONS, newSettings);
     }
