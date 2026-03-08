@@ -30,6 +30,7 @@ import it.keybeeproject.keybee.utility.PrefData;
 import it.keybeeproject.keybee.utility.TypefaceSpan;
 
 public class CustomButtonsActivity extends AppCompatActivity {//implements IabBroadcastReceiver.IabBroadcastListener {
+    private static final String TAG = CustomButtonsActivity.class.getSimpleName();
 
     // The number of button settings. (4 buttons on top + 4 on bottom) * 2 for short+long press makes 16
     static final int NUM_CUSTOM_BUTTON_SETTINGS = 16;
@@ -71,10 +72,13 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
         }
         for (int i = 0; i < NUM_CUSTOM_BUTTON_SETTINGS; i++) {
             String currentSetting = currentSettings.get(i);
-            int position = customButtonSettingList[i].adapter.getPosition(currentSetting);
+            int position = ButtonAction.NAMES.indexOf(currentSetting);
             if (position == -1) {
                 // We didn't find this in the list, so let's set it to the default
-                position = customButtonSettingList[i].adapter.getPosition(defaultButtonActions[i]);
+                position = ButtonAction.NAMES.indexOf(defaultButtonActions[i]);
+            }
+            if (position == -1) {
+                Log.e(TAG, "Could not find default button action " + defaultButtonActions[i] + "for button " + i);
             }
             customButtonSettingList[i].spinner.setSelection(position);
         }

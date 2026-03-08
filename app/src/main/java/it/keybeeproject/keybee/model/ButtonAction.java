@@ -3,6 +3,7 @@ package it.keybeeproject.keybee.model;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.keybeeproject.keybee.utility.PrefData;
@@ -144,12 +145,15 @@ public enum ButtonAction {
     }
 
     public static final String[] LABELS;
+    public static final List<String> NAMES;
 
     static {
         ButtonAction[] values = values();
         LABELS = new String[values.length];
+        NAMES = new ArrayList<>();
         for (int i = 0; i < values.length; i++) {
             LABELS[i] = values[i].buttonLabel;
+            NAMES.add(values[i].name());
         }
     }
 
