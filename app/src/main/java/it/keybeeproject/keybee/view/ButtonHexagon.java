@@ -22,6 +22,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import it.keybeeproject.keybee.R;
+import it.keybeeproject.keybee.model.ButtonAction;
 import it.keybeeproject.keybee.service.KeyboardService;
 import it.keybeeproject.keybee.utility.DrawableHelper;
 import it.keybeeproject.keybee.utility.PrefData;
@@ -871,6 +872,14 @@ public class ButtonHexagon extends AppCompatButton {
 
     public int getCustomizableIndex() {
         return customizableIndex;
+    }
+
+    public ButtonAction getCustomizableButtonAction(Context context) {
+        if (this.isCustomizableButton()) {
+            return ButtonAction.helperGetCustomizableButtonConfiguration(context, this.getCustomizableIndex());
+        } else {
+            return null;
+        }
     }
 
     public void setOnHexagonTouchListener(OnHexagonTouchListener hexagonTouchListener) {

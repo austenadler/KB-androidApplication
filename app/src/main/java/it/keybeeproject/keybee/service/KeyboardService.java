@@ -806,7 +806,8 @@ public class KeyboardService extends InputMethodService implements
 
     private void updateOnShift() {
         for (int buttonPosition = 0; buttonPosition < arrButtons.length; buttonPosition++) {
-            if (arrButtons[buttonPosition].getShape() == 1) {
+            ButtonAction customizableAction = arrButtons[buttonPosition].getCustomizableButtonAction(this);
+            if (arrButtons[buttonPosition].getShape() == 1 || (customizableAction != null && customizableAction.isCharacter)) {
                 arrButtons[buttonPosition].setAllCaps(isShiftOn);
             }
         }
