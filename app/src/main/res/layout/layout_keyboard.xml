@@ -78,6 +78,7 @@
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
             app:customizableIndex="1"
+            app:custom_font="@string/key_font"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -96,6 +97,7 @@
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
             app:customizableIndex="2"
+            app:custom_font="@string/key_font"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -114,6 +116,7 @@
             app:hexagonShape="lower_half"
             app:longClickEnabled="true"
             app:customizableIndex="3"
+            app:custom_font="@string/key_font"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -371,6 +374,7 @@
             android:layout_alignLeft="@id/button30"
             app:hexagonShape="upper_half"
             app:customizableIndex="5"
+            app:custom_font="@string/key_font"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -380,6 +384,7 @@
             android:layout_alignLeft="@id/button32"
             app:hexagonShape="upper_half"
             app:customizableIndex="6"
+            app:custom_font="@string/key_font"
             app:previewEnabled="false" />
 
         <it.keybeeproject.keybee.view.ButtonHexagon
@@ -391,6 +396,7 @@
             app:icon="@drawable/ic_align_left"
             app:longClickEnabled="true"
             app:customizableIndex="7"
+            app:custom_font="@string/key_font"
             app:previewEnabled="false" />
 
     </RelativeLayout>

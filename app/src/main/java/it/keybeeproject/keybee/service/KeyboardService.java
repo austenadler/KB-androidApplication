@@ -806,8 +806,7 @@ public class KeyboardService extends InputMethodService implements
 
     private void updateOnShift() {
         for (int buttonPosition = 0; buttonPosition < arrButtons.length; buttonPosition++) {
-            ButtonAction customizableAction = arrButtons[buttonPosition].getCustomizableButtonAction(this);
-            if (arrButtons[buttonPosition].getShape() == 1 || (customizableAction != null && customizableAction.isCharacter)) {
+            if (arrButtons[buttonPosition].getShape() == 1 || arrButtons[buttonPosition].customizableDisplayAction(this).isCharacter) {
                 arrButtons[buttonPosition].setAllCaps(isShiftOn);
             }
         }
@@ -946,7 +945,7 @@ public class KeyboardService extends InputMethodService implements
     }
 
     private void setButtonText(int buttonPosition) {
-        if (buttonPosition == 0) {
+        if (buttonPosition == 0 || arrButtons[buttonPosition].isCustomizableButton()) {
             return;
         }
 
@@ -1360,36 +1359,35 @@ public class KeyboardService extends InputMethodService implements
 
         ButtonHexagon[] customButtons = {button1, button3, button5, button7, button36, button37, button38, button39};
         // Try to figure out what icon each button should have
-        for (int i = 0; i < customButtons.length; i++) {
+        for (ButtonHexagon customButton : customButtons) {
             // Check the short press action
-            ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, i * 2);
-            // Check the long press action, if short press is disabled
-            if (action == ButtonAction.Disabled) {
-                action = ButtonAction.helperGetCustomizableButtonConfiguration(this, i * 2 + 1);
-            }
-            
-            switch (action) {
+            ButtonAction displayAction = customButton.customizableDisplayAction(this);
+            switch (displayAction) {
                 case Disabled:
                     // This button has no single or double press. There is no icon, we can keep going
+                    customButton.setText("");
+                    customButton.setIcon(0);
                     break;
                 case Settings:
-                    customButtons[i].setIcon(R.drawable.ic_settings);
+                    customButton.setText("");
+                    customButton.setIcon(R.drawable.ic_settings);
                     break;
                 case Emoji:
-                    customButtons[i].setIcon(R.drawable.ic_emoticon);
+                    customButton.setText("");
+                    customButton.setIcon(R.drawable.ic_emoticon);
                     break;
                 case Enter:
-                    // They will send isSearch if they know this is search or not
-                    if (isSearch != null) {
-                        customButtons[i].setIcon(isSearch ? R.drawable.ic_search : R.drawable.ic_enter);
-                    }
+                    customButton.setText("");
+                    customButton.setIcon((isSearch != null && isSearch) ? R.drawable.ic_search : R.drawable.ic_enter);
                     break;
                 case Layout:
-                    customButtons[i].setIcon(alignmentIconId);
+                    customButton.setText("");
+                    customButton.setIcon(alignmentIconId);
                     break;
                 default:
-                    String buttonLabel = action.buttonLabel;
-                    customButtons[i].setText(buttonLabel);
+                    String buttonLabel = displayAction.buttonLabel;
+                    customButton.setText(buttonLabel);
+                    customButton.setIcon(0);
             }
         }
     }

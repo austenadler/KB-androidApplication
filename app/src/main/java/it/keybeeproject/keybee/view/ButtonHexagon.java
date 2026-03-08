@@ -874,6 +874,27 @@ public class ButtonHexagon extends AppCompatButton {
         return customizableIndex;
     }
 
+    /**
+     * Gets the action to display on the button face, to determine which char/icon should be used.
+     * If short is configured, then display short action.
+     * If short is not configured, then display the long action.
+     * @return
+     */
+    public ButtonAction customizableDisplayAction(Context context) {
+        if (this.getCustomizableIndex() == -1) {
+            // We should not be calling this for non-customizable buttons
+            return null;
+        }
+        // Check the short press action
+        ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(context, this.getCustomizableIndex() * 2);
+        // Check the long press action, if short press is disabled
+        if (action == ButtonAction.Disabled) {
+            action = ButtonAction.helperGetCustomizableButtonConfiguration(context, this.getCustomizableIndex() * 2 + 1);
+        }
+        // If neither are configured, then the long press will also be Disabled
+        return action;
+    }
+
     public ButtonAction getCustomizableButtonAction(Context context) {
         if (this.isCustomizableButton()) {
             return ButtonAction.helperGetCustomizableButtonConfiguration(context, this.getCustomizableIndex());
