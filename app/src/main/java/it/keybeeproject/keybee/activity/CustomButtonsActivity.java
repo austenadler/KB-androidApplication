@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,9 +70,13 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
             currentSettings = Arrays.asList(defaultButtonActions);
         }
         for (int i = 0; i < NUM_CUSTOM_BUTTON_SETTINGS; i++) {
-            customButtonSettingList[i].spinner.setSelection(customButtonSettingList[i].adapter.getPosition(
-                    currentSettings.get(i)
-            ));
+            String currentSetting = currentSettings.get(i);
+            int position = customButtonSettingList[i].adapter.getPosition(currentSetting);
+            if (position == -1) {
+                // We didn't find this in the list, so let's set it to the default
+                position = customButtonSettingList[i].adapter.getPosition(defaultButtonActions[i]);
+            }
+            customButtonSettingList[i].spinner.setSelection(position);
         }
         saveSettings();
     }
