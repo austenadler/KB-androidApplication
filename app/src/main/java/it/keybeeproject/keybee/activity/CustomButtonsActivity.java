@@ -49,8 +49,6 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
 
     int[] spinnerIds = {R.id.Spin_Top1Short, R.id.Spin_Top1Long, R.id.Spin_Top2Short, R.id.Spin_Top2Long, R.id.Spin_Top3Short, R.id.Spin_Top3Long, R.id.Spin_Top4Short, R.id.Spin_Top4Long, R.id.Spin_Bottom1Short, R.id.Spin_Bottom1Long, R.id.Spin_Bottom2Short, R.id.Spin_Bottom2Long, R.id.Spin_Bottom3Short, R.id.Spin_Bottom3Long, R.id.Spin_Bottom4Short, R.id.Spin_Bottom4Long};
     int[] textIds = {R.id.Text_Top1Short, R.id.Text_Top1Long, R.id.Text_Top2Short, R.id.Text_Top2Long, R.id.Text_Top3Short, R.id.Text_Top3Long, R.id.Text_Top4Short, R.id.Text_Top4Long, R.id.Text_Bottom1Short, R.id.Text_Bottom1Long, R.id.Text_Bottom2Short, R.id.Text_Bottom2Long, R.id.Text_Bottom3Short, R.id.Text_Bottom3Long, R.id.Text_Bottom4Short, R.id.Text_Bottom4Long};
-//    Spinner[] spinners = new Spinner[NUM_CUSTOM_BUTTON_SETTINGS];
-//    TextView[] textViews = new TextView[NUM_CUSTOM_BUTTON_SETTINGS];
     CustomButtonSetting[] customButtonSettingList = new CustomButtonSetting[NUM_CUSTOM_BUTTON_SETTINGS];
 
     @Override
@@ -100,51 +98,6 @@ public class CustomButtonsActivity extends AppCompatActivity {//implements IabBr
                 finishmethod();
             }
         });
-
-    }
-
-    private void openPopupDialog(final ArrayList<String> list, final String charcter) {
-        final Dialog dialog = new Dialog(CustomButtonsActivity.this);
-        dialog.setContentView(R.layout.popup_dialog);
-        RecyclerView rv = dialog.findViewById(R.id.popup_recycler);
-        rv.setLayoutManager(new LinearLayoutManager(CustomButtonsActivity.this));
-        final PopUpAdapter adapter = new PopUpAdapter(CustomButtonsActivity.this, list);
-        rv.setAdapter(adapter);
-        TextView ok = dialog.findViewById(R.id.ok);
-        TextView reset = dialog.findViewById(R.id.reset);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (charcter) {
-                    case PrefData.a:
-                        ArrayList<String> a = adapter.getList();
-                        PrefData.setArrayListPref(CustomButtonsActivity.this, PrefData.a, a);
-                        break;
-                }
-
-                popupupdate();
-                dialog.dismiss();
-            }
-        });
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (charcter) {
-                    case PrefData.a:
-                        // TODO: Reset button not working
-//                        ArrayList<String> a1 = new ArrayList<String>(Arrays.asList(a));
-//                        adapter.setList(a1);
-//                        adapter.notifyDataSetChanged();
-                        break;
-                }
-                //popupupdate();
-            }
-        });
-        dialog.show();
-    }
-
-    private void popupupdate() {
-        PrefData.setBooleanPrefs(CustomButtonsActivity.this, PrefData.KEY_KEYBOARD_LAYOUT_CUSTOMPOPUP, !PrefData.getBooleanPrefs(CustomButtonsActivity.this, PrefData.KEY_KEYBOARD_LAYOUT_CUSTOMPOPUP));
 
     }
 
