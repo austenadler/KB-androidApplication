@@ -373,6 +373,7 @@
             android:layout_below="@id/button31"
             android:layout_alignLeft="@id/button30"
             app:hexagonShape="upper_half"
+            app:longClickEnabled="true"
             app:customizableIndex="5"
             app:custom_font="@string/key_font"
             app:previewEnabled="false" />
@@ -383,6 +384,7 @@
             android:layout_below="@id/button33"
             android:layout_alignLeft="@id/button32"
             app:hexagonShape="upper_half"
+            app:longClickEnabled="true"
             app:customizableIndex="6"
             app:custom_font="@string/key_font"
             app:previewEnabled="false" />

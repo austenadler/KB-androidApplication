@@ -545,7 +545,6 @@ public class KeyboardService extends InputMethodService implements
     }
 
     private char handleCustomAction(ButtonAction action) {
-        Log.i("XXX", "Handling action " + action);
         if (action.isCharacter) {
             onClickLetter(action.buttonLabel.charAt(0));
         } else {
@@ -703,7 +702,6 @@ public class KeyboardService extends InputMethodService implements
 
         // First, check if this is a customizable button
         if (buttonHexagon.isCustomizableButton()) {
-            Log.i("XXX", "Handling customizable button");
             // This is a short press, so see what it's configured to do
             ButtonAction action = ButtonAction.helperGetCustomizableButtonConfiguration(this, buttonHexagon.getCustomizableIndex() * 2 + 1);
             // Update the keycode to whatever the custom action is
