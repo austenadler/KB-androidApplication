@@ -1399,6 +1399,10 @@ public class KeyboardService extends InputMethodService implements
 
         setEmojiViewVisible(false);
 
+        composing.setLength(0);
+
+        isCapsLockOn = false;
+
         boolean isSearch = false;
         switch (editorInfo.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
             case EditorInfo.IME_ACTION_SEARCH:
@@ -1407,11 +1411,6 @@ public class KeyboardService extends InputMethodService implements
             default:
         }
         setCustomButtonIcons(isSearch);
-
-        composing.setLength(0);
-
-        isCapsLockOn = false;
-
 
         ExtractedTextRequest request = new ExtractedTextRequest();
         request.hintMaxChars = 1;
