@@ -1399,6 +1399,10 @@ public class KeyboardService extends InputMethodService implements
                     customButton.setText("");
                     customButton.setIcon((isSearch != null && isSearch) ? R.drawable.ic_search : R.drawable.ic_enter);
                     break;
+                case Paste:
+                    customButton.setText("");
+                    customButton.setIcon(R.drawable.ic_paste);
+                    break;
                 case Layout:
                     customButton.setText("");
                     customButton.setIcon(alignmentIconId);
